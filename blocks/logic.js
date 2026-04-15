@@ -14,11 +14,22 @@ function loadLogicBlocks() {
                 this.setMutator(new Blockly.Mutator(['logic_if_else']));
             }
         }
-        Blockly.Blocks['logic_if_else'] = {
+        Blockly.Blocks['logic_else_if'] = {
             init: function() {
-                this.appendValueInput('bool').setCheck('Boolean').appendField('if');
-                this.appendValueInput('statementA').appendField('else')
-                this.appendValueInput('statementB')
+                this.appendValueInput('bool').setCheck('Boolean').appendField('else if');
+                this.appendValueInput('statement')
+                this.setPreviousStatement(true, null);
+                this.setNextStatement(true, null);
+                this.setTooltip('');
+                this.setHelpUrl('');
+                this.setColour(210);
+                this.setMutator(new Blockly.Mutator(['logic_if_else']));
+            }
+        }
+        Blockly.Blocks['logic_else'] = {
+            init: function() {
+                this.appendDummyInput().appendField('else');
+                this.appendValueInput('statement')
                 this.setPreviousStatement(true, null);
                 this.setNextStatement(true, null);
                 this.setTooltip('');
@@ -46,12 +57,12 @@ function loadLogicBlocks() {
             statement = gmlGenerator.statementToCode(block, 'statement');
             return `if (${bool}) {\n${statement}}\n`;
         }
-        gmlGenerator['logic_if_else'] = (block) => {
+        gmlGenerator['logic_else_if'] = (block) => {
             bool = gmlGenerator.valueToCode(block, 'bool', gmlGenerator.ORDER_ATOMIC) || 'false';
-            statementA = gmlGenerator.statementToCode(block, 'statementA');
-            statementB = gmlGenerator.statementToCode(block, 'statementB');
-            return `if (${bool}) {\n${statementA}} else {\n${statementB}}\n`;
+            statement = gmlGenerator.statementToCode(block, 'statement');
+            return `else if (${bool}) {\n${statement}}\n`;
         }
+        gmlGenerator['logic_else'] = (block) => `else {\n${gmlGenerator.statementToCode(block, 'statement')}}\n`;
         gmlGenerator['logic_if_report'] = (block) => {
             bool = gmlGenerator.valueToCode(block, 'bool', gmlGenerator.ORDER_ATOMIC) || 'false';
             valueA = gmlGenerator.statementToCode(block, 'statement');
