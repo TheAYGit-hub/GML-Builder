@@ -49,6 +49,7 @@
         </xml>
 
         <script>
+            const gmlGenerator = new Blockly.Generator('GML');
             const workspace = Blockly.inject('blocklyDiv', {
                 toolbox: document.getElementById('toolbox')
             });
@@ -92,24 +93,24 @@
                     this.setColour(210)
                 }
             }
-            gmlGenerator.forBlock['logic_if'] = function(block, gmlgenerator) {
-                const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
-                const statement = gmlgenerator.statementToCode(block, 'statement')
+            gmlGenerator.forBlock['logic_if'] = function(block) {
+                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
+                const statement = gmlGenerator.statementToCode(block, 'statement')
                 return `if (${cond}) {\n${statement}}\n`
                 }
-            gmlGenerator.forBlock['logic_else_if'] = function(block, gmlgenerator) {
-                const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
-                const statement = gmlgenerator.statementToCode(block, 'statement')
+            gmlGenerator.forBlock['logic_else_if'] = function(block) {
+                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
+                const statement = gmlGenerator.statementToCode(block, 'statement')
                 return `else if (${cond}) {\n${statement}}\n`
             }
-            gmlGenerator.forBlock['logic_else'] = function(block, gmlgenerator) {
-                const statement = gmlgenerator.statementToCode(block, 'statement')
+            gmlGenerator.forBlock['logic_else'] = function(block) {
+                const statement = gmlGenerator.statementToCode(block, 'statement')
                 return `else {\n${statement}}\n`
             }
-            gmlGenerator.forBlock['logic_if_report'] = function(block, gmlgenerator) {
-                const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
-                const valueA = gmlgenerator.valueToCode(block, 'valueA', 0) || 'false'
-                const valueB = gmlgenerator.valueToCode(block, 'valueB', 0) || 'false'
+            gmlGenerator.forBlock['logic_if_report'] = function(block) {
+                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
                 return `(${cond} ? ${valueA} : ${valueB})`
             }
 
