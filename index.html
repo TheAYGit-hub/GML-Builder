@@ -1,51 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Blockly Modular App</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Blockly GitHub Pages App</title>
+        <script src="https://unpkg.com/blockly/blockly.min.js"></script>
 
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: Arial;
-        }
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
 
-        #header {
-            height: 50px;
-            background: #222;
-            color: white;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            gap: 10px;
-        }
+            #header {
+                height: 50px;
+                background: #222;
+                color: white;
+                display: flex;
+                align-items: center;
+                padding: 0 10px;
+                gap: 10px;
+            }
+            button {
+                padding: 6px 10px;
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            #blocklyDiv {
+                height: calc(100% - 50px);
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="header">
+            <button onclick="runCode()">Run</button>
+            <button onclick="saveBlocks()">Save</button>
+            <button onclick="loadBlocks()">Load</button>
+            <span id="output"></span>
+        </div>
+        <div id="blocklyDiv"></div>
 
-        #blocklyDiv {
-            height: calc(100% - 50px);
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
+        <xml id="toolbox" style="display: none">
+            <category name="Logic" colour="210">
+                <block type="controls_if"></block>
+            </category>
+        </xml>
 
-<div id="header">
-    <button onclick="runCode()">Run</button>
-    <button onclick="saveBlocks()">Save</button>
-    <button onclick="loadBlocks()">Load</button>
-    <span id="output"></span>
-</div>
+        <script>
+            const workspace = Blockly.inject('blocklyDiv', {
+                toolbox: document.getElementById('toolbox')
+            });
 
-<div id="blocklyDiv"></div>
+            Blockly.Blocks['logic_if'] = {
+                init: function() {
+                    this.appendValueInput("cond").setCheck("Boolean").appendField("if")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setColour(210)
+                }
+            }
+            Blockly.Blocks['logic_else_if'] = {
+                init: function() {
+                    this.appendValueInput("cond").setCheck("Boolean").appendField("else if")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setColour(210)
+                }
+            }
+            Blockly.Blocks['logic_else'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("else")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setColour(210)
+                }
+            }
+            Blockly.Blocks['logic_if_report'] = {
+                init: function() {
+                    this.appendValueInput("cond").setCheck("Boolean").appendField("if")
+                    this.appendValueInput("valueA").appendField("then")
+                    this.appendValueInput("valueB").appendField("else")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setinlineInputs(true)
+                    this.setColour(210)
+                }
+            }
+            gmlGenerator.forBlock['logic_if'] = function(block, gmlgenerator) {
+                const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
+                const statement = gmlgenerator.statementToCode(block, 'statement')
+                return `if (${cond}) {\n${statement}}\n`
+                }
+            gmlGenerator.forBlock['logic_else_if'] = function(block, gmlgenerator) {
+                const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
+                const statement = gmlgenerator.statementToCode(block, 'statement')
+                return `else if (${cond}) {\n${statement}}\n`
+            }
+            gmlGenerator.forBlock['logic_else'] = function(block, gmlgenerator) {
+                const statement = gmlgenerator.statementToCode(block, 'statement')
+                return `else {\n${statement}}\n`
+            }
+            gmlGenerator.forBlock['logic_if_report'] = function(block, gmlgenerator) {
+                const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
+                const valueA = gmlgenerator.valueToCode(block, 'valueA', 0) || 'false'
+                const valueB = gmlgenerator.valueToCode(block, 'valueB', 0) || 'false'
+                return `(${cond} ? ${valueA} : ${valueB})`
+            }
 
-<xml id="toolbox" style="display:none">
-    <category name="Logic" colour="210">
-        <block type="logic_if"></block>
-        <block type="logic_boolean"></block>
-    </category>
-</xml>
 
-<script type="module" src="./main.js"></script>
-
-</body>
+            function runCode() {
+                const code = Blockly.JavaScript.workspaceToCode(workspace);
+                console.log(code);
+                try {
+                    eval(code);
+                    document.getElementById("output").textContent = "Ran successfully";
+                } catch (e) {
+                    document.getElementById("output").textContent = "Error: " + e;
+                }
+            }
+            function saveBlocks() {
+                const xml = Blockly.Xml.workspaceToDom(workspace);
+                const text = Blockly.Xml.domToText(xml);
+                localStorage.setItem("blocklyWorkspace", text);
+                document.getElementById("output").textContent = "Saved!";
+            }
+            function loadBlocks() {
+                const text = localStorage.getItem("blocklyWorkspace");
+                if (!text) {
+                    document.getElementById("output").textContent = "Nothing saved";
+                    return;
+                }
+                workspace.clear();
+                const xml = Blockly.Xml.textToDom(text);
+                Blockly.Xml.domToWorkspace(xml, workspace);
+                document.getElementById("output").textContent = "Loaded!";
+            }
+        </script>
+    </body>
 </html>
