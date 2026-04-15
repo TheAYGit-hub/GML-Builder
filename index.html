@@ -4,14 +4,12 @@
         <meta charset="utf-8">
         <title>Blockly GitHub Pages App</title>
         <script src="https://unpkg.com/blockly/blockly.min.js"></script>
-
         <style>
             html, body {
                 height: 100%;
                 margin: 0;
                 font-family: Arial, sans-serif;
             }
-
             #header {
                 height: 50px;
                 background: #222;
@@ -41,45 +39,40 @@
             <span id="output"></span>
         </div>
         <div id="blocklyDiv"></div>
-
         <xml id="toolbox" style="display: none">
-            <category name="Control">
-                <category name="Logic" colour="210">
-                    <block type="logic_if"></block>
-                    <block type="logic_else_if"></block>
-                    <block type="logic_else"></block>
-                    <block type="logic_if_report"></block>
-                    <sep gap="8"></sep>
-                    <block type="logic_operator">
-                        <field name="operator">and</field>
-                    </block>
-                    <block type="logic_operator">
-                        <field name="operator">or</field>
-                    </block>
-                    <block type="logic_operator">
-                        <field name="operator">xor</field>
-                    </block>
-                    <block type="logic_not"></block>
-                    <sep gap="8"></sep>
-                    <block type="logic_bool">
-                        <field name="bool">true</field>
-                    </block>
-                    <block type="logic_bool">
-                        <field name="bool">false</field>
-                    </block>
-                    <sep gap="8"></sep>
-                    <block type="logic_is_bool"></block>
-                    <block type="logic_to_bool"></block>
-                </category>
+            <category name="Logic" colour="210">
+                <block type="logic_if"></block>
+                <block type="logic_else_if"></block>
+                <block type="logic_else"></block>
+                <block type="logic_if_report"></block>
+                <sep gap="8"></sep>
+                <block type="logic_operator">
+                    <field name="operator">and</field>
+                </block>
+                <block type="logic_operator">
+                    <field name="operator">or</field>
+                </block>
+                <block type="logic_operator">
+                    <field name="operator">xor</field>
+                </block>
+                <block type="logic_not"></block>
+                <sep gap="8"></sep>
+                <block type="logic_bool">
+                    <field name="bool">true</field>
+                </block>
+                <block type="logic_bool">
+                    <field name="bool">false</field>
+                </block>
+                <sep gap="8"></sep>
+                <block type="logic_is_bool"></block>
+                <block type="logic_to_bool"></block>
             </category>
         </xml>
-
         <script>
             const gmlGenerator = new Blockly.Generator('GML');
             const workspace = Blockly.inject('blocklyDiv', {
                 toolbox: document.getElementById('toolbox')
             });
-
             Blockly.Blocks['logic_if'] = {
                 init: function() {
                     this.appendValueInput("cond").setCheck("Boolean").appendField("if")
