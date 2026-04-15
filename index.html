@@ -52,21 +52,21 @@
 <xml id="toolbox" style="display: none">
   <category name="Control" colour="210">
     <block type="logic_if"></block>
+    <block type="logic_else_if"><mutation else_if="1"></mutation></block>
     <block type="logic_if_report"></block>
   </category>
 </xml>
 
 <script type="module">
+  /* import blocks (unable to collapse) */
+  import loadLogicBlocks from "blocks/logic.js"
+  /* call functions from imported files */ {
+    loadLogicBlocks()
+  }
   /* create workspace */ {
     const workspace = Blockly.inject('blocklyDiv', {
       toolbox: document.getElementById('toolbox')
     });
-  }
-  /* import blocks (unable to collapse) */
-  import loadLogicBlocks from "blocks/logic.js"
-
-  /* call functions from imported files */ {
-    loadLogicBlocks()
   }
   /* run code */ {
     function runCode() {
