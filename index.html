@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Blockly GitHub Pages App</title>
+        <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
+
+            #header {
+                height: 50px;
+                background: #222;
+                color: white;
+                display: flex;
+                align-items: center;
+                padding: 0 10px;
+                gap: 10px;
+            }
+
+            button {
+               padding: 6px 10px;
+               border: none;
+               cursor: pointer;
+              border-radius: 4px;
+            }
+
+            #blocklyDiv {
+                height: calc(100% - 50px);
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="header">
+            <button onclick="runCode()">Run</button>
+            <button onclick="saveBlocks()">Save</button>
+            <button onclick="loadBlocks()">Load</button>
+            <span id="output"></span>
+        </div>
+        <div id="blocklyDiv"></div>
+        <xml id="toolbox" style="display: none">
+            <category name="Logic" colour="210">
+                <block type="controls_if"></block>
+            </category>
+        </xml>
+        <script>
+            const workspace = Blockly.inject('blocklyDiv', {
+                toolbox: document.getElementById('toolbox')
+            });-
+            Blockly.Blocks['hello_block'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("say hello");
+                    this.setPreviousStatement(true);
+                    this.setNextStatement(true);
+                    this.setColour(120);
+                }
+            };
+            Blockly.JavaScript['hello_block'] = function(block) {
+                return 'alert("Hello from Blockly!");\\n';
+            };
+            function runCode() {
+              const code = Blockly.JavaScript.workspaceToCode(workspace);
+              console.log(code);
+              try {
+                eval(code);
+                document.getElementById("output").textContent = "Ran successfully";
+              } catch (e) {
+                document.getElementById("output").textContent = "Error: " + e;
+              }
+  
+            function saveBlocks() {
+              const xml = Blockly.Xml.workspaceToDom(workspace);
+              const text = Blockly.Xml.domToText(xml);
+              localStorage.setItem("blocklyWorkspace", text);
+              document.getElementById("output").textContent = "Saved!";
+            }
+            function loadBlocks() {
+              const text = localStorage.getItem("blocklyWorkspace");
+              if (!text) {
+                document.getElementById("output").textContent = "Nothing saved";
+                return;
+              }
+              workspace.clear();
+              const xml = Blockly.Xml.textToDom(text);
+              Blockly.Xml.domToWorkspace(xml, workspace);
+              document.getElementById("output").textContent = "Loaded!";
+            }
+        </script>
+    </body>
+</html>
