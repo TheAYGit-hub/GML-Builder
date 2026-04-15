@@ -43,34 +43,30 @@
             <category name="Control">
                 <category name="Logic" colour="210">
                     <block type="logic_if"></block>
-                    <sep gap="8" /></sep>
-                    <block type="logic_else_if"></block>
-                    <sep gap="8" /></sep>
-                    <block type="logic_else"></block>
-                    <sep gap="8" /></sep>
-                    <block type="logic_if_report"></block>
+                    <sep gap="8"></sep>
+                    <block type="logic_if_else"></block>
                     <block type="logic_operator">
                         <field name="operator">(_&&</field>
                     </block>
-                    <sep gap="8" /></sep>
+                    <sep gap="8"></sep>
                     <block type="logic_operator">
                         <field name="operator">(_||</field>
                     </block>
-                    <sep gap="8" /></sep>
+                    <sep gap="8"></sep>
                     <block type="logic_operator">
                         <field name="operator">bool(_^</field>
                     </block>
-                    <sep gap="8" /></sep>
+                    <sep gap="8"></sep>
                     <block type="logic_not"></block>
                     <block type="logic_bool">
                         <field name="bool">true</field>
                     </block>
-                    <sep gap="8" /></sep>
+                    <sep gap="8"></sep>
                     <block type="logic_bool">
                         <field name="bool">false</field>
                     </block>
                     <block type="logic_is_bool"></block>
-                    <sep gap="8" /></sep>
+                    <sep gap="8"></sep>
                     <block type="logic_to_bool"></block>
                 </category>
             </category>
@@ -86,34 +82,19 @@
                     this.appendStatementInput("statement")
                     this.setPreviousStatement(true)
                     this.setNextStatement(true)
+                    this.setOutput(true)
                     this.setColour(210)
                 }
             }
-            Blockly.Blocks['logic_else_if'] = {
-                init: function() {
-                    this.appendValueInput("cond").setCheck("Boolean").appendField("else if")
-                    this.appendStatementInput("statement")
-                    this.setPreviousStatement(true)
-                    this.setNextStatement(true)
-                    this.setColour(210)
-                }
-            }
-            Blockly.Blocks['logic_else'] = {
-                init: function() {
-                    this.appendDummyInput().appendField("else")
-                    this.appendStatementInput("statement")
-                    this.setPreviousStatement(true)
-                    this.setNextStatement(true)
-                    this.setColour(210)
-                }
-            }
-            Blockly.Blocks['logic_if_report'] = {
+            Blockly.Blocks['logic_if_else'] = {
                 init: function() {
                     this.appendValueInput("cond").setCheck("Boolean").appendField("if")
-                    this.appendValueInput("valueA").appendField("then")
-                    this.appendValueInput("valueB").appendField("else")
+                    this.appendStatementInput("statement")
+                    this.appendDummyInput().appendField("else")
+                    this.appendStatementInput("elseStatement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
                     this.setOutput(true)
-                    this.setInputsInline(true)
                     this.setColour(210)
                 }
             }
@@ -126,7 +107,7 @@
                         ["xor","bool(_^"],
                         ["nand","!(_&&"],
                         ["nor","!(_||"],
-                        ["nxor","!bool(_^"]
+                        ["xnor","!bool(_^"]
                     ]), "operator")
                     this.appendValueInput("valueB")
                     this.setOutput(true, "Boolean")
@@ -169,25 +150,37 @@
                     this.setColour(210)
                 }
             }
+            Blockly.Blocks['loops_repeat'] = {
+                init: function() {
+                    this.appendValueInput("times").setCheck("Number").appendField("repeat")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setColour(210)
+                }
+            }
             gmlGenerator.forBlock['logic_if'] = function(block) {
                 const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
                 const statement = gmlGenerator.statementToCode(block, 'statement')
-                return `if (${cond}) {\n${statement}}\n`
+                if (block.previousConnection && block.previousConnection.isConnected()) {
+                    return `if (${cond}) {\n${statement}}\n`
+                } else if (block.previousConnection && block.nextConnection.isConnected()) {
+                    return `if (${cond}) {\n${statement}}\n`
+                } else if (block.previousConnection && block.outputConnection.isConnected()) {
+                    return `(${cond} ? ${statement} : undefined)`
                 }
-            gmlGenerator.forBlock['logic_else_if'] = function(block) {
+            }
+            gmlGenerator.forBlock['logic_if_else'] = function(block) {
                 const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
                 const statement = gmlGenerator.statementToCode(block, 'statement')
-                return `else if (${cond}) {\n${statement}}\n`
-            }
-            gmlGenerator.forBlock['logic_else'] = function(block) {
-                const statement = gmlGenerator.statementToCode(block, 'statement')
-                return `else {\n${statement}}\n`
-            }
-            gmlGenerator.forBlock['logic_if_report'] = function(block) {
-                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
-                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
-                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
-                return `(${cond} ? ${valueA} : ${valueB})`
+                const elseStatement = gmlGenerator.statementToCode(block, 'elseStatement')
+                if (block.previousConnection && block.previousConnection.isConnected()) {
+                    return `if (${cond}) {\n${statement}} else {\n${elseStatement}}\n`
+                } else if (block.previousConnection && block.nextConnection.isConnected()) {
+                    return `if (${cond}) {\n${statement}} else {\n${elseStatement}}\n`
+                } else if (block.previousConnection && block.outputConnection.isConnected()) {
+                    return `(${cond} ? ${statement} : ${elseStatement})`
+                }
             }
             gmlGenerator.forBlock['logic_operator'] = function(block) {
                 const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
@@ -199,6 +192,11 @@
             gmlGenerator.forBlock['logic_bool'] = (block) => block.getFieldValue('bool')
             gmlGenerator.forBlock['logic_is_bool'] = (block) => `is_bool(${gmlGenerator.valueToCode(block, 'value', 0)})`
             gmlGenerator.forBlock['logic_to_bool'] = (block) => `bool(${gmlGenerator.valueToCode(block, 'value', 0)})`
+            gmlGenerator.forBlock['loops_repeat'] = function(block) {
+                const times = gmlGenerator.valueToCode(block, 'times', 0) || '0'
+                const statement = gmlGenerator.statementToCode(block, 'statement')
+                return `repeat (${times}) {\n${statement}}\n`
+            }
 
             function runCode() {
                 const code = Blockly.JavaScript.workspaceToCode(workspace);
