@@ -1,74 +1,61 @@
-import {javascriptGenerator} from 'https://unpkg.com/blockly/javascript.js'
-gmlGenerator = new javascriptGenerator.Generator('GML');
-function loadLogicBlocks() {
-    /* blocks */ {
-        Blockly.Blocks['logic_if'] = {
-            init: function() {
-                this.appendValueInput('bool').setCheck('Boolean').appendField('if');
-                this.appendValueInput('statement')
-                this.setPreviousStatement(true, null);
-                this.setNextStatement(true, null);
-                this.setTooltip('');
-                this.setHelpUrl('');
-                this.setColour(210);
-                this.setMutator(new Blockly.Mutator(['logic_if_else']));
-            }
-        }
-        Blockly.Blocks['logic_else_if'] = {
-            init: function() {
-                this.appendValueInput('bool').setCheck('Boolean').appendField('else if');
-                this.appendValueInput('statement')
-                this.setPreviousStatement(true, null);
-                this.setNextStatement(true, null);
-                this.setTooltip('');
-                this.setHelpUrl('');
-                this.setColour(210);
-                this.setMutator(new Blockly.Mutator(['logic_if_else']));
-            }
-        }
-        Blockly.Blocks['logic_else'] = {
-            init: function() {
-                this.appendDummyInput().appendField('else');
-                this.appendValueInput('statement')
-                this.setPreviousStatement(true, null);
-                this.setNextStatement(true, null);
-                this.setTooltip('');
-                this.setHelpUrl('');
-                this.setColour(210);
-                this.setMutator(new Blockly.Mutator(['logic_if_else']));
-            }
-        }
-        Blockly.Blocks['logic_if_report'] = {
-            init: function() {
-                this.appendValueInput('bool').setCheck('Boolean').appendField('if');
-                this.appendValueInput('valueA').appendField('then');
-                this.appendValueInput('valueB').appendField('else');
-                this.setInputsInline(true)
-                this.setOutput(true, null);
-                this.setTooltip('');
-                this.setHelpUrl('');
-                this.setColour(210);
-            }
+export function loadLogic(Blockly, gmlGenerator) {
+    Blockly.Blocks['logic_if'] = {
+        init: function() {
+            this.appendValueInput("cond").setCheck("Boolean").appendField("if")
+            this.appendStatementInput("statement")
+            this.setPreviousStatement(true)
+            this.setNextStatement(true)
+            this.setColour(210)
         }
     }
-    /* generators */ {
-        gmlGenerator['logic_if'] = (block) => {
-            bool = gmlGenerator.valueToCode(block, 'bool', gmlGenerator.ORDER_ATOMIC) || 'false';
-            statement = gmlGenerator.statementToCode(block, 'statement');
-            return `if (${bool}) {\n${statement}}\n`;
+    Blockly.Blocks['logic_else_if'] = {
+        init: function() {
+            this.appendValueInput("cond").setCheck("Boolean").appendField("else if")
+            this.appendStatementInput("statement")
+            this.setPreviousStatement(true)
+            this.setNextStatement(true)
+            this.setColour(210)
         }
-        gmlGenerator['logic_else_if'] = (block) => {
-            bool = gmlGenerator.valueToCode(block, 'bool', gmlGenerator.ORDER_ATOMIC) || 'false';
-            statement = gmlGenerator.statementToCode(block, 'statement');
-            return `else if (${bool}) {\n${statement}}\n`;
+    }
+    Blockly.Blocks['logic_else'] = {
+        init: function() {
+            this.appendDummyInput().appendField("else")
+            this.appendStatementInput("statement")
+            this.setPreviousStatement(true)
+            this.setNextStatement(true)
+            this.setColour(210)
         }
-        gmlGenerator['logic_else'] = (block) => `else {\n${gmlGenerator.statementToCode(block, 'statement')}}\n`;
-        gmlGenerator['logic_if_report'] = (block) => {
-            bool = gmlGenerator.valueToCode(block, 'bool', gmlGenerator.ORDER_ATOMIC) || 'false';
-            valueA = gmlGenerator.statementToCode(block, 'statement');
-            valueB = gmlGenerator.valueToCode(block, 'valueB', gmlGenerator.ORDER_ATOMIC) || '0';
-            return `(${bool}) ? (${valueA} : ${valueB})`;
+    }
+    Blockly.Blocks['logic_if_report'] = {
+        init: function() {
+            this.appendValueInput("cond").setCheck("Boolean").appendField("if")
+            this.appendValueInput("valueA").appendField("then")
+            this.appendValueInput("valueB").appendField("else")
+            this.appendStatementInput("statement")
+            this.setPreviousStatement(true)
+            this.setNextStatement(true)
+            this.setinlineInputs(true)
+            this.setColour(210)
         }
+    }
+    gmlGenerator.forBlock['logic_if'] = function(block, gmlgenerator) {
+        const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
+        const statement = gmlgenerator.statementToCode(block, 'statement')
+        return `if (${cond}) {\n${statement}}\n`
+    }
+    gmlGenerator.forBlock['logic_else_if'] = function(block, gmlgenerator) {
+        const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
+        const statement = gmlgenerator.statementToCode(block, 'statement')
+        return `else if (${cond}) {\n${statement}}\n`
+    }
+    gmlGenerator.forBlock['logic_else'] = function(block, gmlgenerator) {
+        const statement = gmlgenerator.statementToCode(block, 'statement')
+        return `else {\n${statement}}\n`
+    }
+    gmlGenerator.forBlock['logic_if_report'] = function(block, gmlgenerator) {
+        const cond = gmlgenerator.valueToCode(block, 'cond', 0) || 'false'
+        const valueA = gmlgenerator.valueToCode(block, 'valueA', 0) || 'false'
+        const valueB = gmlgenerator.valueToCode(block, 'valueB', 0) || 'false'
+        return `(${cond} ? ${valueA} : ${valueB})`
     }
 }
-export default loadLogicBlocks
