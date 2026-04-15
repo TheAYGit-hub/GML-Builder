@@ -73,7 +73,7 @@
               } catch (e) {
                 document.getElementById("output").textContent = "Error: " + e;
               }
-  
+            }
             function saveBlocks() {
               const xml = Blockly.Xml.workspaceToDom(workspace);
               const text = Blockly.Xml.domToText(xml);
