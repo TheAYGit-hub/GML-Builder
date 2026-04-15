@@ -42,29 +42,34 @@
         <xml id="toolbox" style="display: none">
             <category name="Logic" colour="210">
                 <block type="logic_if"></block>
-                <block type="logic_else_if"></block>
-                <block type="logic_else"></block>
-                <block type="logic_if_report"></block>
                 <sep gap="8"></sep>
+                <block type="logic_else_if"></block>
+                <sep gap="8"></sep>
+                <block type="logic_else"></block>
+                <sep gap="8"></sep>
+                <block type="logic_if_report"></block>
                 <block type="logic_operator">
                     <field name="operator">and</field>
                 </block>
+                <sep gap="8"></sep>
                 <block type="logic_operator">
                     <field name="operator">or</field>
                 </block>
+                <sep gap="8"></sep>
                 <block type="logic_operator">
                     <field name="operator">xor</field>
                 </block>
-                <block type="logic_not"></block>
                 <sep gap="8"></sep>
+                <block type="logic_not"></block>
                 <block type="logic_bool">
                     <field name="bool">true</field>
                 </block>
+                <sep gap="8"></sep>
                 <block type="logic_bool">
                     <field name="bool">false</field>
                 </block>
-                <sep gap="8"></sep>
                 <block type="logic_is_bool"></block>
+                <sep gap="8"></sep>
                 <block type="logic_to_bool"></block>
             </category>
         </xml>
@@ -112,7 +117,7 @@
             }
             Blockly.Blocks['logic_operator'] = {
                 init: function() {
-                    this.appendValueInput("valueA").appendField("then")
+                    this.appendValueInput("valueA")
                     this.appendDummyInput().appendField(new Blockly.FieldDropdown([
                         ["and","(_&&"],
                         ["or","(_||"],
@@ -121,7 +126,7 @@
                         ["nor","!(_||"],
                         ["nxor","!bool(_^"]
                     ]), "operator")
-                    this.appendValueInput("valueB").appendField("else")
+                    this.appendValueInput("valueB")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
                     this.setColour(210)
