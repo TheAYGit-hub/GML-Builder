@@ -36,6 +36,7 @@
             <button onclick="runCode()">Run</button>
             <button onclick="saveBlocks()">Save</button>
             <button onclick="loadBlocks()">Load</button>
+            <button onclick="exportCode()">Export</button>
             <span id="output"></span>
         </div>
         <div id="blocklyDiv"></div>
@@ -45,16 +46,18 @@
                     <block type="logic_if"></block>
                     <sep gap="8"></sep>
                     <block type="logic_if_else"></block>
+                    <sep gap="8"></sep>
+                    <block type="logic_if_report"></block>
                     <block type="logic_operator">
-                        <field name="operator">(_&&</field>
+                        <field name="operator">(_ &&</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_operator">
-                        <field name="operator">(_||</field>
+                        <field name="operator">(_ ||</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_operator">
-                        <field name="operator">bool(_^</field>
+                        <field name="operator">bool(_ ^</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_not"></block>
@@ -68,6 +71,26 @@
                     <block type="logic_is_bool"></block>
                     <sep gap="8"></sep>
                     <block type="logic_to_bool"></block>
+                </category>
+                <category name="Loops" colour="120">
+                    <block type="loops_always"></block>
+                    <sep gap="8"></sep>
+                    <block type="loops_repeat"></block>
+                    <sep gap="8"></sep>
+                    <block type="loops_forever"></block>
+                    <sep gap="8"></sep>
+                    <block type="loops_break"></block>
+                    <block type="loops_on_start"></block>
+                    <sep gap="8"></sep>
+                    <block type="loops_while_until">
+                        <field name="act">while</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="loops_while_until">
+                        <field name="act">until</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="loops_continue"></block>
                 </category>
             </category>
         </xml>
@@ -98,16 +121,26 @@
                     this.setColour(210)
                 }
             }
+            Blockly.Blocks['logic_if_report'] = {
+                init: function() {
+                    this.appendValueInput("cond").setCheck("Boolean").appendField("if")
+                    this.appendValueInput("valueA").appendField("then")
+                    this.appendValueInput("valueB").appendField("else")
+                    this.setOutput(true)
+                    this.setInputsInline(true)
+                    this.setColour(210)
+                }
+            }
             Blockly.Blocks['logic_operator'] = {
                 init: function() {
                     this.appendValueInput("valueA")
                     this.appendDummyInput().appendField(new Blockly.FieldDropdown([
-                        ["and","(_&&"],
-                        ["or","(_||"],
-                        ["xor","bool(_^"],
-                        ["nand","!(_&&"],
-                        ["nor","!(_||"],
-                        ["xnor","!bool(_^"]
+                        ["and","(_ &&"],
+                        ["or","(_ ||"],
+                        ["xor","bool(_ ^"],
+                        ["nand","!(_ &&"],
+                        ["nor","!(_ ||"],
+                        ["xnor","!bool(_ ^"]
                     ]), "operator")
                     this.appendValueInput("valueB")
                     this.setOutput(true, "Boolean")
@@ -134,7 +167,7 @@
             }
             Blockly.Blocks['logic_is_bool'] = {
                 init: function() {
-                    this.appendValueInput("cond").appendField("is")
+                    this.appendValueInput("value").appendField("is")
                     this.appendDummyInput().appendField("a boolean?")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
@@ -143,11 +176,18 @@
             }
             Blockly.Blocks['logic_to_bool'] = {
                 init: function() {
-                    this.appendValueInput("cond").appendField("convert")
-                    this.appendDummyInput().appendField("to boolean?")
+                    this.appendValueInput("value").appendField("convert")
+                    this.appendDummyInput().appendField("to boolean")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
                     this.setColour(210)
+                }
+            }
+            Blockly.Blocks['loops_always'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("always")
+                    this.setNextStatement(true)
+                    this.setColour(120)
                 }
             }
             Blockly.Blocks['loops_repeat'] = {
@@ -156,48 +196,137 @@
                     this.appendStatementInput("statement")
                     this.setPreviousStatement(true)
                     this.setNextStatement(true)
-                    this.setColour(210)
+                    this.setColour(120)
+                }
+            }
+            Blockly.Blocks['loops_forever'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("forever")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setColour(120)
+                }
+            }
+            Blockly.Blocks['loops_break'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("break")
+                    this.setPreviousStatement(true)
+                    this.setColour(120)
+                }
+            }
+            Blockly.Blocks['loops_on_start'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("on start")
+                    this.setNextStatement(true)
+                    this.setColour(120)
+                }
+            }
+            Blockly.Blocks['loops_while_until'] = {
+                init: function() {
+                    this.appendValueInput("cond").setCheck("Boolean").appendField(new Blockly.FieldDropdown([
+                        ["while","while"],
+                        ["until","until"],
+                    ]), "act")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setColour(120)
+                }
+            }
+            Blockly.Blocks['loops_continue'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("continue")
+                    this.setPreviousStatement(true)
+                    this.setColour(120)
+                }
+            }
+            Blockly.Blocks['comparison_switch'] = {
+                init: function() {
+                    this.appendValueInput("value").appendField("switch")
+                    this.appendStatementInput("statement").setCheck("Case")
+                    this.setPreviousStatement(true)
+                    this.setNextStatement(true)
+                    this.setOutput(true)
+                    this.setColour("#a9a9a9")
+                }
+            }
+            Blockly.Blocks['comparison_case'] = {
+                init: function() {
+                    this.appendValueInput("value").appendField("case")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true, "Case")
+                    this.setNextStatement(true, "Case")
+                    this.setColour("#a9a9a9")
+                }
+            }
+            Blockly.Blocks['comparison_default'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("default")
+                    this.appendStatementInput("statement")
+                    this.setPreviousStatement(true, "Case")
+                    this.setColour("#a9a9a9")
                 }
             }
             gmlGenerator.forBlock['logic_if'] = function(block) {
                 const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
                 const statement = gmlGenerator.statementToCode(block, 'statement')
-                if (block.previousConnection && block.previousConnection.isConnected()) {
-                    return `if (${cond}) {\n${statement}}\n`
-                } else if (block.previousConnection && block.nextConnection.isConnected()) {
-                    return `if (${cond}) {\n${statement}}\n`
-                } else if (block.previousConnection && block.outputConnection.isConnected()) {
-                    return `(${cond} ? ${statement} : undefined)`
+                if (block.outputConnection && block.outputConnection.isConnected()) {
+                    return [`(${cond} ? (function () {\n${statement}})() : undefined)`, 0]
                 }
+                return `if (${cond}) {\n${statement}}\n`
             }
             gmlGenerator.forBlock['logic_if_else'] = function(block) {
                 const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
                 const statement = gmlGenerator.statementToCode(block, 'statement')
                 const elseStatement = gmlGenerator.statementToCode(block, 'elseStatement')
-                if (block.previousConnection && block.previousConnection.isConnected()) {
-                    return `if (${cond}) {\n${statement}} else {\n${elseStatement}}\n`
-                } else if (block.previousConnection && block.nextConnection.isConnected()) {
-                    return `if (${cond}) {\n${statement}} else {\n${elseStatement}}\n`
-                } else if (block.previousConnection && block.outputConnection.isConnected()) {
-                    return `(${cond} ? ${statement} : ${elseStatement})`
+                if (block.outputConnection && block.outputConnection.isConnected()) {
+                    return [`(${cond} ? (function () {\n${statement}})() : (function () {\n${elseStatement}})())`, 0]
                 }
+                return `if (${cond}) {\n${statement}} else {\n${elseStatement}}\n`
+            }
+            gmlGenerator.forBlock['logic_if_report'] = function(block) {
+                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
+                return [`(${cond} ? ${valueA} : ${valueB})`, 0]
             }
             gmlGenerator.forBlock['logic_operator'] = function(block) {
                 const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
                 const operator = block.getFieldValue('operator').split('_')
                 const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
-                return operator[0] + valueA + operator[1] + valueB + ')'
+                return [operator[0] + valueA + operator[1] + valueB + ' )', 0]
             }
-            gmlGenerator.forBlock['logic_not'] = (block) => `!(${gmlGenerator.valueToCode(block, 'value', 0) || 'false'})`
-            gmlGenerator.forBlock['logic_bool'] = (block) => block.getFieldValue('bool')
-            gmlGenerator.forBlock['logic_is_bool'] = (block) => `is_bool(${gmlGenerator.valueToCode(block, 'value', 0)})`
-            gmlGenerator.forBlock['logic_to_bool'] = (block) => `bool(${gmlGenerator.valueToCode(block, 'value', 0)})`
+            gmlGenerator.forBlock['logic_not'] = (block) => [`!(${gmlGenerator.valueToCode(block, 'value', 0) || 'false'})`, 0]
+            gmlGenerator.forBlock['logic_bool'] = (block) => [block.getFieldValue('bool'), 0]
+            gmlGenerator.forBlock['logic_is_bool'] = (block) => [`is_bool(${gmlGenerator.valueToCode(block, 'value', 0)})`, 0]
+            gmlGenerator.forBlock['logic_to_bool'] = (block) => [`bool(${gmlGenerator.valueToCode(block, 'value', 0)})`, 0]
+            gmlGenerator.forBlock['loops_always'] = function(block) {
+                const nextCode = gmlGenerator.blockToCode(block.getNextBlock())
+                return `while true {\n${nextCode}}\n`
+            }
+            gmlGenerator.forBlock['loops_on_start'] = (block) => gmlGenerator.blockToCode(block.getNextBlock())
             gmlGenerator.forBlock['loops_repeat'] = function(block) {
                 const times = gmlGenerator.valueToCode(block, 'times', 0) || '0'
                 const statement = gmlGenerator.statementToCode(block, 'statement')
                 return `repeat (${times}) {\n${statement}}\n`
             }
-
+            gmlGenerator.forBlock['loops_forever'] = function(block) {
+                const statement = gmlGenerator.statementToCode(block, 'statement')
+                return `while true {\n${statement}}\n`
+            }
+            gmlGenerator.forBlock['loops_while_until'] = function(block) {
+                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
+                const act = block.getFieldValue('act')
+                const statement = gmlGenerator.statementToCode(block, 'statement')
+                if (act === 'while') {
+                    return `while (${cond}) {\n${statement}}\n`
+                } else {
+                    return `while (!(${cond})) {\n${statement}}\n`
+                }
+            }
+            gmlGenerator.forBlock['loops_break'] = () => 'break\n'
+            gmlGenerator.forBlock['loops_continue'] = () => 'continue\n'
             function runCode() {
                 const code = Blockly.JavaScript.workspaceToCode(workspace);
                 console.log(code);
@@ -208,22 +337,45 @@
                     document.getElementById("output").textContent = "Error: " + e;
                 }
             }
+            
             function saveBlocks() {
                 const xml = Blockly.Xml.workspaceToDom(workspace);
-                const text = Blockly.Xml.domToText(xml);
-                localStorage.setItem("blocklyWorkspace", text);
-                document.getElementById("output").textContent = "Saved!";
+                const xmlText = Blockly.Xml.domToText(xml);
+                const blob = new Blob([xmlText], {type: "text/xml"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "blocks.xml";
+                a.click();
+                URL.revokeObjectURL(url);
             }
-            function loadBlocks() {
-                const text = localStorage.getItem("blocklyWorkspace");
-                if (!text) {
-                    document.getElementById("output").textContent = "Nothing saved";
-                    return;
-                }
-                workspace.clear();
-                const xml = Blockly.Xml.textToDom(text);
-                Blockly.Xml.domToWorkspace(xml, workspace);
-                document.getElementById("output").textContent = "Loaded!";
+            function loadBlocks(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const text = e.target.result;
+                        const xml = Blockly.Xml.textToDom(text);
+                        workspace.clear();
+                        Blockly.Xml.domToWorkspace(xml, workspace);
+                        document.getElementById("output").textContent = "Loaded from file!";
+                    } catch (err) {
+                        document.getElementById("output").textContent = "Error loading file";
+                        console.error(err);
+                    }
+                };
+                reader.readAsText(file);
+            }
+            function exportCode() {
+                const code = gmlGenerator.workspaceToCode(workspace);
+                const blob = new Blob([code], {type: "text/plain"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "code.gml";
+                a.click();
+                URL.revokeObjectURL(url);
             }
         </script>
     </body>
