@@ -33,9 +33,6 @@
     </head>
     <body>
         <div id="header">
-            <button onclick="runCode()">Run</button>
-            <button onclick="saveBlocks()">Save</button>
-            <button onclick="loadBlocks()">Load</button>
             <button onclick="exportCode()">Export</button>
             <span id="output"></span>
         </div>
@@ -92,6 +89,24 @@
                     <sep gap="8"></sep>
                     <block type="loops_continue"></block>
                 </category>
+                <category name="Comparison" colour="#a9a9a9">
+                    <block type="comparison_switch"></block>
+                    <sep gap="8"></sep>
+                    <block type="comparison_case"></block>
+                    <sep gap="8"></sep>
+                    <block type="comparison_default"></block>
+                    <block type="comparison_operator">
+                        <field name="operator">&lt;</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="comparison_operator">
+                        <field name="operator">==</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="comparison_operator">
+                        <field name="operator">&gt;</field>
+                    </block>
+                </category>
             </category>
         </xml>
         <script>
@@ -133,7 +148,7 @@
             }
             Blockly.Blocks['logic_operator'] = {
                 init: function() {
-                    this.appendValueInput("valueA")
+                    this.appendValueInput("valueA").setCheck("Boolean")
                     this.appendDummyInput().appendField(new Blockly.FieldDropdown([
                         ["and","(_ &&"],
                         ["or","(_ ||"],
@@ -142,7 +157,7 @@
                         ["nor","!(_ ||"],
                         ["xnor","!bool(_ ^"]
                     ]), "operator")
-                    this.appendValueInput("valueB")
+                    this.appendValueInput("valueB").setCheck("Boolean")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
                     this.setColour(210)
@@ -244,7 +259,7 @@
             Blockly.Blocks['comparison_switch'] = {
                 init: function() {
                     this.appendValueInput("value").appendField("switch")
-                    this.appendStatementInput("statement").setCheck("Case")
+                    this.appendStatementInput("cases").setCheck("Case")
                     this.setPreviousStatement(true)
                     this.setNextStatement(true)
                     this.setOutput(true)
@@ -265,6 +280,23 @@
                     this.appendDummyInput().appendField("default")
                     this.appendStatementInput("statement")
                     this.setPreviousStatement(true, "Case")
+                    this.setColour("#a9a9a9")
+                }
+            }
+            Blockly.Blocks['comparison_operator'] = {
+                init: function() {
+                    this.appendValueInput("valueA")
+                    this.appendDummyInput().appendField(new Blockly.FieldDropdown([
+                        ["<", "<"],
+                        ["=", "=="],
+                        [">", ">"],
+                        ["≤", "<="],
+                        ["≠", "!="],
+                        ["≥", ">="]
+                    ]), "operator")
+                    this.appendValueInput("valueB")
+                    this.setOutput(true, "Boolean")
+                    this.setInputsInline(true)
                     this.setColour("#a9a9a9")
                 }
             }
@@ -299,8 +331,8 @@
             }
             gmlGenerator.forBlock['logic_not'] = (block) => [`!(${gmlGenerator.valueToCode(block, 'value', 0) || 'false'})`, 0]
             gmlGenerator.forBlock['logic_bool'] = (block) => [block.getFieldValue('bool'), 0]
-            gmlGenerator.forBlock['logic_is_bool'] = (block) => [`is_bool(${gmlGenerator.valueToCode(block, 'value', 0)})`, 0]
-            gmlGenerator.forBlock['logic_to_bool'] = (block) => [`bool(${gmlGenerator.valueToCode(block, 'value', 0)})`, 0]
+            gmlGenerator.forBlock['logic_is_bool'] = (block) => [`is_bool(${gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'})`, 0]
+            gmlGenerator.forBlock['logic_to_bool'] = (block) => [`bool(${gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'})`, 0]
             gmlGenerator.forBlock['loops_always'] = function(block) {
                 const nextCode = gmlGenerator.blockToCode(block.getNextBlock())
                 return `while true {\n${nextCode}}\n`
@@ -312,7 +344,7 @@
                 return `repeat (${times}) {\n${statement}}\n`
             }
             gmlGenerator.forBlock['loops_forever'] = function(block) {
-                const statement = gmlGenerator.statementToCode(block, 'statement')
+                const statement = gmlGenerator.statementToCode(block, 'statement') || '0'
                 return `while true {\n${statement}}\n`
             }
             gmlGenerator.forBlock['loops_while_until'] = function(block) {
@@ -337,35 +369,28 @@
                     document.getElementById("output").textContent = "Error: " + e;
                 }
             }
-            
-            function saveBlocks() {
-                const xml = Blockly.Xml.workspaceToDom(workspace);
-                const xmlText = Blockly.Xml.domToText(xml);
-                const blob = new Blob([xmlText], {type: "text/xml"});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "blocks.xml";
-                a.click();
-                URL.revokeObjectURL(url);
+            gmlGenerator.forBlock['comparison_switch'] = function(block) {
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                const statement = gmlGenerator.statementToCode(block, 'cases')
+                if (block.outputConnection && block.outputConnection.isConnected()) {
+                    return [`(switch(${value}) {\n${statement}})()`, 0]
+                }
+                return `switch (${value}) {\n${statement}}\n`
             }
-            function loadBlocks(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const text = e.target.result;
-                        const xml = Blockly.Xml.textToDom(text);
-                        workspace.clear();
-                        Blockly.Xml.domToWorkspace(xml, workspace);
-                        document.getElementById("output").textContent = "Loaded from file!";
-                    } catch (err) {
-                        document.getElementById("output").textContent = "Error loading file";
-                        console.error(err);
-                    }
-                };
-                reader.readAsText(file);
+            gmlGenerator.forBlock['comparison_case'] = function(block) {
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                const statement = gmlGenerator.statementToCode(block, 'statement')
+                return `case ${value}:\n${statement}\n`
+            }
+            gmlGenerator.forBlock['comparison_default'] = function(block) {
+                const statement = gmlGenerator.statementToCode(block, 'statement')
+                return `default:\n${statement}\n`
+            }
+            gmlGenerator.forBlock['comparison_operator'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
+                const operator = block.getFieldValue('operator')
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
+                return [`(${valueA} ${operator} ${valueB})`, 0]
             }
             function exportCode() {
                 const code = gmlGenerator.workspaceToCode(workspace);
