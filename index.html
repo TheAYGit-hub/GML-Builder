@@ -110,6 +110,9 @@
                     <block type="comparison_operator">
                         <field name="operator">&gt;</field>
                     </block>
+                    <block type="comparison_set_epsilon"></block>
+                    <sep gap="8"></sep>
+                    <block type="comparison_get_epsilon"></block>
                 </category>
             </category>
             <category name="Variables">
@@ -126,6 +129,36 @@
                     <block type="bvariables_change"></block>
                     <sep gap="8"></sep>
                     <block type="bvariables_get"></block>
+                </category>
+                <category name="Global Vars" colour="250">
+                    <block type="gvariables_create"></block>
+                    <sep gap="8"></sep>
+                    <block type="gvariables_delete"></block>
+                    <sep gap="8"></sep>
+                    <block type="gvariables_exists"></block>
+                    <block type="gvariables_set"></block>
+                    <sep gap="8"></sep>
+                    <block type="gvariables_change"></block>
+                    <sep gap="8"></sep>
+                    <block type="gvariables_get"></block>
+                    <block type="gvariables_global_struct"></block>
+                    <block type="gvariables_create_deprecated"></block>
+                </category>
+                <category name="Instance Vars" colour="0">
+                    <block type="ivariables_create"></block>
+                    <sep gap="8"></sep>
+                    <block type="ivariables_delete"></block>
+                    <sep gap="8"></sep>
+                    <block type="ivariables_exists"></block>
+                    <block type="ivariables_set"></block>
+                    <sep gap="8"></sep>
+                    <block type="ivariables_change"></block>
+                    <sep gap="8"></sep>
+                    <block type="ivariables_get"></block>
+                </category>
+                <category name="Functions" colour="290">
+                    <block type="ivariables_create"></block>
+                    <sep gap="8"></sep>
                 </category>
             </category>
         </xml>
@@ -327,12 +360,19 @@
                     this.appendValueInput('value').setCheck("Number").appendField('set epsilon to')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(330)
+                    this.setColour("#a9a9a9")
+                }
+            }
+            Blockly.Blocks['comparison_get_epsilon'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('get epsilon')
+                    this.setOutput(true, "Number")
+                    this.setColour("#a9a9a9")
                 }
             }
             Blockly.Blocks['bvariables_create'] = {
                 init: function() {
-                    this.appendDummyInput().appendField('create var').appendField(new Blockly.FieldTextInput('variable'), 'varname');
+                    this.appendDummyInput().appendField('create var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setColour(330)
@@ -340,7 +380,7 @@
             }
             Blockly.Blocks['bvariables_create_scope'] = {
                 init: function() {
-                    this.appendDummyInput().appendField('create scope var').appendField(new Blockly.FieldTextInput('variable'), 'varname');
+                    this.appendDummyInput().appendField('create scope var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setColour(330)
@@ -382,6 +422,117 @@
                     this.appendDummyInput().appendField('get var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setOutput(true, "Number")
                     this.setColour(330)
+                }
+            }
+            Blockly.Blocks['ivariables_create'] = {
+                init: function() {
+                    this.appendValueInput('instance').setCheck("Instance").appendField('create var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(0)
+                }
+            }
+            Blockly.Blocks['ivariables_delete'] = {
+                init: function() {
+                    this.appendValueInput('instance').setCheck("Instance").appendField('delete var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(0)
+                }
+            }
+            Blockly.Blocks['ivariables_exists'] = {
+                init: function() {
+                    this.appendValueInput('instance').setCheck("Instance").appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('exists at instance')
+                    this.setOutput(true, "Boolean")
+                    this.setColour(0)
+                }
+            }
+            Blockly.Blocks['ivariables_set'] = {
+                init: function() {
+                    this.appendValueInput('instance').setCheck("Instance").appendField('set var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
+                    this.appendValueInput('value').appendField('to')
+                    this.setInputsInline(true)
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(0)
+                }
+            }
+            Blockly.Blocks['ivariables_change'] = {
+                init: function() {
+                    this.appendValueInput('instance').setCheck("Instance").appendField('change var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
+                    this.appendValueInput('value').appendField('by')
+                    this.setInputsInline(true)
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(0)
+                }
+            }
+            Blockly.Blocks['ivariables_get'] = {
+                init: function() {
+                    this.appendValueInput('instance').setCheck("Instance").appendField('get var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('from instance')
+                    this.setOutput(true, "Number")
+                    this.setColour(0)
+                }
+            }
+            Blockly.Blocks['gvariables_create'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('create global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_delete'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('delete global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_exists'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('global var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('exists?')
+                    this.setOutput(true, "Boolean")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_set'] = {
+                init: function() {
+                    this.appendValueInput('value').appendField('set global var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('to')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_change'] = {
+                init: function() {
+                    this.appendValueInput('value').setCheck("Number").appendField('change global var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('by')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_get'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('get global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
+                    this.setOutput(true, "Number")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_global_struct'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('global var struct')
+                    this.setOutput(true, "Number")
+                    this.setColour(250)
+                }
+            }
+            Blockly.Blocks['gvariables_create_deprecated'] = {
+                init: function() {
+                    this.appendDummyInput().appendField(new Blockly.FieldImage(deprecatedImage, 60, 15, { alt: '(deprecated)'})).appendField('convert var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('to global')
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour(250)
                 }
             }
             gmlGenerator.forBlock['logic_if'] = function(block) {
@@ -476,6 +627,13 @@
                 const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
                 return [`(${valueA} ${operator} ${valueB})`, 0]
             }
+            gmlGenerator.forBlock['comparison_set_epsilon'] = function(block) {
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || '0.000001'
+                return `math_set_epsilon(${value})\n`
+            }
+            gmlGenerator.forBlock['comparison_get_epsilon'] = function(block) {
+                return ['math_get_epsilon()', 0]
+            }
             function varSuit(text) {
                 return text.replace(/[^a-zA-Z0-9_]/g, '_')
             }
@@ -494,6 +652,64 @@
                 return `${varname} += ${value}\n`
             }
             gmlGenerator.forBlock['bvariables_get'] = (block) => varSuit(block.getFieldValue('varname'))
+            function exportCode() {
+                const code = gmlGenerator.workspaceToCode(workspace);
+                const blob = new Blob([code], {type: "text/plain"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "code.gml";
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            gmlGenerator.forBlock['ivariables_create'] = function(block) {
+                const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
+                const varname = varSuit(block.getFieldValue('varname'))
+                return `${instance}.${varname} = undefined\n`
+            }
+            gmlGenerator.forBlock['ivariables_delete'] = function(block) {
+                const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
+                const varname = varSuit(block.getFieldValue('varname'))
+                return `delete ${instance}.${varname}\n`
+            }
+            gmlGenerator.forBlock['ivariables_exists'] = function(block) {
+                const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
+                const varname = varSuit(block.getFieldValue('varname'))
+                return `variable_instance_exists(${instance}, ${varname})`
+            }
+            gmlGenerator.forBlock['ivariables_set'] = function(block) {
+                const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
+                const varname = varSuit(block.getFieldValue('varname'))
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                return `${instance}.${varname} = ${value}\n`
+            }
+            gmlGenerator.forBlock['ivariables_change'] = function(block) {
+                const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
+                const varname = varSuit(block.getFieldValue('varname'))
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                return `${instance}.${varname} += ${value}\n`
+            }
+            gmlGenerator.forBlock['ivariables_get'] = function(block) {
+                const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
+                const varname = varSuit(block.getFieldValue('varname'))
+                return [`${instance}.${varname}`, 0]
+            }
+            gmlGenerator.forBlock['gvariables_create'] = (block) => `global.${varSuit(block.getFieldValue('varname'))} = undefined\n`
+            gmlGenerator.forBlock['gvariables_delete'] = (block) => `delete global.${varSuit(block.getFieldValue('varname'))}\n`
+            gmlGenerator.forBlock['gvariables_exists'] = (block) => `struct_exists(id, ${varSuit(block.getFieldValue('varname'))})`
+            gmlGenerator.forBlock['gvariables_create_deprecated'] = (block) => `globalvar ${varSuit(block.getFieldValue('varname'))}\n`
+            gmlGenerator.forBlock['gvariables_set'] = function(block) {
+                const varname = varSuit(block.getFieldValue('varname'))
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                return `global.${varname} = ${value}\n`
+            }
+            gmlGenerator.forBlock['gvariables_change'] = function(block) {
+                const varname = varSuit(block.getFieldValue('varname'))
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                return `global.${varname} += ${value}\n`
+            }
+            gmlGenerator.forBlock['gvariables_get'] = (block) => `global.${varSuit(block.getFieldValue('varname'))}`
+            gmlGenerator.forBlock['gvariables_global_struct'] = () => 'global'
             function exportCode() {
                 const code = gmlGenerator.workspaceToCode(workspace);
                 const blob = new Blob([code], {type: "text/plain"});
