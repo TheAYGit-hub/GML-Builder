@@ -551,6 +551,8 @@
                 init: function() {
                     this.appendDummyInput().appendField("function").appendField(new Blockly.FieldTextInput("myFunction"), "name").appendField("inputs").appendField(new Blockly.FieldTextInput("x, y"), "inputs")
                     this.appendStatementInput("statement").setCheck("Block")
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
                     this.setOutput(true, "Function")
                     this.setColour(290)
                     Blockly.Extensions.apply('hydra_toggle_next', this, false)
