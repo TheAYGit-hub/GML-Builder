@@ -39,7 +39,7 @@
         <div id="blocklyDiv"></div>
         <xml id="toolbox" style="display: none">
             <category name="Control">
-                <category name="Logic" colour="210">
+                <category name="Logic" colour="#4c97ff">
                     <block type="logic_if"></block>
                     <sep gap="8"></sep>
                     <block type="logic_if_else"></block>
@@ -73,7 +73,7 @@
                     <sep gap="8"></sep>
                     <block type="logic_to_bool"></block>
                 </category>
-                <category name="Loops" colour="120">
+                <category name="Loops" colour="#0fbd8c">
                     <block type="loops_always"></block>
                     <sep gap="8"></sep>
                     <block type="loops_repeat"></block>
@@ -116,7 +116,7 @@
                 </category>
             </category>
             <category name="Variables">
-                <category name="Basic Vars" colour="330">
+                <category name="Basic Vars" colour="#ff8c1a">
                     <block type="bvariables_create"></block>
                     <sep gap="8"></sep>
                     <block type="bvariables_create_scope"></block>
@@ -130,7 +130,7 @@
                     <sep gap="8"></sep>
                     <block type="bvariables_get"></block>
                 </category>
-                <category name="Global Vars" colour="250">
+                <category name="Global Vars" colour="#6218ed">
                     <block type="gvariables_create"></block>
                     <sep gap="8"></sep>
                     <block type="gvariables_delete"></block>
@@ -143,7 +143,7 @@
                     <block type="gvariables_get"></block>
                     <block type="gvariables_global_struct"></block>
                 </category>
-                <category name="Instance Vars" colour="0">
+                <category name="Instance Vars" colour="#ec3b59">
                     <block type="ivariables_create"></block>
                     <sep gap="8"></sep>
                     <block type="ivariables_delete"></block>
@@ -155,7 +155,7 @@
                     <sep gap="8"></sep>
                     <block type="ivariables_get"></block>
                 </category>
-                <category name="Functions" colour="290">
+                <category name="Functions" colour="#ff6680">
                     <block type="functions_create"></block>
                     <sep gap="8"></sep>
                     <block type="functions_create_inputs"></block>
@@ -163,17 +163,27 @@
                     <block type="functions_return"></block>
                     <block type="functions_execute"></block>
                 </category>
-                <category name="Structs" colour="30">
-                    
+            </category>
+            <category name="Outputs">
+                <category name="Strings" colour="#ffbf00">
+
+                </category>
+                <category name="Math" colour="#59c059">
+
+                </category>
+                <category name="Arrays" colour="#ff661a">
+
+                </category>
+                <category name="Structs" colour="#748bee">
+
                 </category>
             </category>
         </xml>
         <script>
-            const gmlGenerator = new Blockly.Generator('GML');
+            const gmlGenerator = new Blockly.Generator('GML')
             const workspace = Blockly.inject('blocklyDiv', {
                 toolbox: document.getElementById('toolbox')
-            });
-            const deprecatedImage = "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNDAuMTg4NjYiIGhlaWdodD0iMzUuMzM3ODciIHZpZXdCb3g9IjAsMCwxNDAuMTg4NjYsMzUuMzM3ODciPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNjkuOTA1NjcsLTE2NC43NTUxMikiPjxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIj48cGF0aCBkPSJNMTc2LjM4Nzk3LDIwMC4wOTI5OWMtMy41ODAwNywwIC02LjQ4MjMsLTMuNDAxOTkgLTYuNDgyMywtNy41OTg1OHYtMTUuODYyOThjMCwtNC4xOTY1OCAyLjkwMjIyLC03LjU5ODU3IDYuNDgyMywtNy41OTg1N2gxMjcuMjI0MDdjMy41ODAwOCwwIDYuNDgyMywzLjQwMTk5IDYuNDgyMyw3LjU5ODU3djE1Ljg2Mjk4YzAsNC4xOTY1OCAtMi45MDIyMiw3LjU5ODU4IC02LjQ4MjMsNy41OTg1OHoiIGZpbGwtb3BhY2l0eT0iMC42OTQxMiIgZmlsbD0iIzNmMTAxOCIgc3Ryb2tlLXdpZHRoPSIwIi8+PHBhdGggZD0iTTE3Ni4zODc5NywxOTUuODE1MjVjLTMuNTgwMDcsMCAtNi40ODIzLC0zLjQwMiAtNi40ODIzLC03LjU5ODU4di0xNS44NjI5N2MwLC00LjE5NjU4IDIuOTAyMjIsLTcuNTk4NTggNi40ODIzLC03LjU5ODU4aDEyNy4yMjQwN2MzLjU4MDA3LDAgNi40ODIzLDMuNDAyIDYuNDgyMyw3LjU5ODU4djE1Ljg2Mjk3YzAsNC4xOTY1OCAtMi45MDIyMiw3LjU5ODU4IC02LjQ4MjMsNy41OTg1OHoiIGZpbGw9IiM4ODIyMzMiIHN0cm9rZS13aWR0aD0iMCIvPjx0ZXh0IHRyYW5zZm9ybT0idHJhbnNsYXRlKDE3Ni43Njg5MSwxODUuNzY4NzUpIHNjYWxlKDAuNSwwLjUpIHNrZXdYKC0xNS42MDQwNCkiIGZvbnQtc2l6ZT0iNDAiIHhtbDpzcGFjZT0icHJlc2VydmUiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMSIgZm9udC1mYW1pbHk9IlNhbnMtU2VyaWYiIGZvbnQtd2VpZ2h0PSJub3JtYWwiIHRleHQtYW5jaG9yPSJzdGFydCI+PHRzcGFuIHg9IjAiIGR5PSIwIj5kZXByZWNhdGVkPC90c3Bhbj48L3RleHQ+PC9nPjwvZz48L3N2Zz48IS0tcm90YXRpb25DZW50ZXI6NzAuMDk0MzMwMDY1MDg3Njk6MTUuMjQ0ODgwNDA3NjA3NDExLS0+"
+            })
             Blockly.Blocks['logic_if'] = {
                 init: function() {
                     this.appendValueInput("cond").setCheck("Boolean").appendField("if")
@@ -181,7 +191,7 @@
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true)
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                     Blockly.Extensions.apply('hydra_toggle_next', this, false)
                 }
             }
@@ -194,7 +204,7 @@
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true)
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                     Blockly.Extensions.apply('hydra_toggle_next', this, false)
                 }
             }
@@ -205,7 +215,7 @@
                     this.appendValueInput("valueB").appendField("else")
                     this.setOutput(true)
                     this.setInputsInline(true)
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                 }
             }
             Blockly.Blocks['logic_operator'] = {
@@ -222,14 +232,14 @@
                     this.appendValueInput("valueB").setCheck("Boolean")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                 }
             }
             Blockly.Blocks['logic_not'] = {
                 init: function() {
                     this.appendValueInput("value").appendField("not")
                     this.setOutput(true, "Boolean")
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                 }
             }
             Blockly.Blocks['logic_bool'] = {
@@ -240,7 +250,7 @@
                         ["undefined","undefined"]
                     ]), "bool")
                     this.setOutput(true, "Boolean")
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                 }
             }
             Blockly.Blocks['logic_is_bool'] = {
@@ -249,7 +259,7 @@
                     this.appendDummyInput().appendField("a boolean?")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                 }
             }
             Blockly.Blocks['logic_to_bool'] = {
@@ -258,14 +268,14 @@
                     this.appendDummyInput().appendField("to boolean")
                     this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
-                    this.setColour(210)
+                    this.setColour("#4c97ff")
                 }
             }
             Blockly.Blocks['loops_always'] = {
                 init: function() {
                     this.appendDummyInput().appendField("always")
                     this.setNextStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['loops_repeat'] = {
@@ -274,7 +284,7 @@
                     this.appendStatementInput("statement").setCheck("Block")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['loops_forever'] = {
@@ -283,21 +293,21 @@
                     this.appendStatementInput("statement").setCheck("Block")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['loops_break'] = {
                 init: function() {
                     this.appendDummyInput().appendField("break")
                     this.setPreviousStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['loops_on_start'] = {
                 init: function() {
                     this.appendDummyInput().appendField("on start")
                     this.setNextStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['loops_while_until'] = {
@@ -309,14 +319,14 @@
                     this.appendStatementInput("statement").setCheck("Block")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['loops_continue'] = {
                 init: function() {
                     this.appendDummyInput().appendField("continue")
                     this.setPreviousStatement(true, "Block")
-                    this.setColour(120)
+                    this.setColour("#0fbd8c")
                 }
             }
             Blockly.Blocks['comparison_switch'] = {
@@ -384,7 +394,7 @@
                     this.appendDummyInput().appendField('create var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['bvariables_create_scope'] = {
@@ -392,7 +402,7 @@
                     this.appendDummyInput().appendField('create scope var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['bvariables_delete'] = {
@@ -400,14 +410,14 @@
                     this.appendDummyInput().appendField('delete var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['bvariables_exists'] = {
                 init: function() {
                     this.appendDummyInput().appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('exists?')
                     this.setOutput(true, "Boolean")
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['bvariables_set'] = {
@@ -415,7 +425,7 @@
                     this.appendValueInput('value').appendField('set var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('to')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['bvariables_change'] = {
@@ -423,14 +433,14 @@
                     this.appendValueInput('value').setCheck("Number").appendField('change var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('by')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['bvariables_get'] = {
                 init: function() {
                     this.appendDummyInput().appendField('get var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setOutput(true)
-                    this.setColour(330)
+                    this.setColour("#ff8c1a")
                 }
             }
             Blockly.Blocks['ivariables_create'] = {
@@ -438,7 +448,7 @@
                     this.appendValueInput('instance').setCheck("Instance").appendField('create var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(0)
+                    this.setColour("#ec3b59")
                 }
             }
             Blockly.Blocks['ivariables_delete'] = {
@@ -446,14 +456,14 @@
                     this.appendValueInput('instance').setCheck("Instance").appendField('delete var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(0)
+                    this.setColour("#ec3b59")
                 }
             }
             Blockly.Blocks['ivariables_exists'] = {
                 init: function() {
                     this.appendValueInput('instance').setCheck("Instance").appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('exists at instance')
                     this.setOutput(true, "Boolean")
-                    this.setColour(0)
+                    this.setColour("#ec3b59")
                 }
             }
             Blockly.Blocks['ivariables_set'] = {
@@ -463,7 +473,7 @@
                     this.setInputsInline(true)
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(0)
+                    this.setColour("#ec3b59")
                 }
             }
             Blockly.Blocks['ivariables_change'] = {
@@ -473,14 +483,14 @@
                     this.setInputsInline(true)
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(0)
+                    this.setColour("#ec3b59")
                 }
             }
             Blockly.Blocks['ivariables_get'] = {
                 init: function() {
                     this.appendValueInput('instance').setCheck("Instance").appendField('get var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('from instance')
                     this.setOutput(true)
-                    this.setColour(0)
+                    this.setColour("#ec3b59")
                 }
             }
             Blockly.Blocks['gvariables_create'] = {
@@ -488,7 +498,7 @@
                     this.appendDummyInput().appendField('create global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['gvariables_delete'] = {
@@ -496,14 +506,14 @@
                     this.appendDummyInput().appendField('delete global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['gvariables_exists'] = {
                 init: function() {
                     this.appendDummyInput().appendField('global var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('exists?')
                     this.setOutput(true, "Boolean")
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['gvariables_set'] = {
@@ -511,7 +521,7 @@
                     this.appendValueInput('value').appendField('set global var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('to')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['gvariables_change'] = {
@@ -519,21 +529,21 @@
                     this.appendValueInput('value').setCheck("Number").appendField('change global var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('by')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['gvariables_get'] = {
                 init: function() {
                     this.appendDummyInput().appendField('get global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setOutput(true)
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['gvariables_global_struct'] = {
                 init: function() {
                     this.appendDummyInput().appendField('global var struct')
                     this.setOutput(true, "Struct")
-                    this.setColour(250)
+                    this.setColour("#6218ed")
                 }
             }
             Blockly.Blocks['functions_create'] = {
@@ -543,7 +553,7 @@
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true, "Function")
-                    this.setColour(290)
+                    this.setColour("#ff6680")
                     Blockly.Extensions.apply('hydra_toggle_next', this, false)
                 }
             }
@@ -554,7 +564,7 @@
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true, "Function")
-                    this.setColour(290)
+                    this.setColour("#ff6680")
                     Blockly.Extensions.apply('hydra_toggle_next', this, false)
                 }
             }
@@ -562,7 +572,7 @@
                 init: function() {
                     this.appendValueInput("value").appendField("return")
                     this.setPreviousStatement(true, "Block")
-                    this.setColour(290)
+                    this.setColour("#ff6680")
                 }
             }
             Blockly.Blocks['functions_execute'] = {
@@ -573,7 +583,8 @@
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true)
-                    this.setColour(290)
+                    this.setColour("#ff6680")
+                    Blockly.Extensions.apply('hydra_toggle_next', this, false)
                 }
             }
             gmlGenerator.forBlock['logic_if'] = function(block) {
