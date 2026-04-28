@@ -33,7 +33,10 @@
     </head>
     <body>
         <div id="header">
+            <button onclick="saveBlocks()">Save</button>
+            <button onclick="loadBlocks()">Load</button>
             <button onclick="exportCode()">Export</button>
+            <button onclick="workspace.clear()">Clear</button>
             <span id="output"></span>
         </div>
         <div id="blocklyDiv"></div>
@@ -166,19 +169,38 @@
             </category>
             <category name="Outputs">
                 <category name="Strings" colour="#ffbf00">
-
+                    <block type="strings_create"></block>
+                    <category name="More..." colour="#ffbf00">
+                        
+                    </category>
                 </category>
                 <category name="Math" colour="#59c059">
+                    <category name="Numbers" colour="#59c059">
+                        <block type="numbers_create"></block>
+                    </category>
+                    <category name="Trigonometry" colour="#59c059">
 
+                    </category>
+                    <category name="Matrices" colour="#59c059">
+
+                    </category>
+                    <category name="Date & Time" colour="#59c059">
+
+                    </category>
                 </category>
                 <category name="Arrays" colour="#ff661a">
+                    <category name="More..." colour="#ff661a">
 
+                    </category>
                 </category>
                 <category name="Structs" colour="#748bee">
 
                 </category>
             </category>
         </xml>
+        <script>
+            console.log(document.getElementById('toolbox'))
+        </script>
         <script>
             const gmlGenerator = new Blockly.Generator('GML')
             const workspace = Blockly.inject('blocklyDiv', {
@@ -587,6 +609,37 @@
                     Blockly.Extensions.apply('hydra_toggle_next', this, false)
                 }
             }
+            Blockly.Blocks['strings_create'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('"').appendField(new Blockly.FieldTextInput("text"), "text").appendField('"')
+                    this.setOutput(true, "String")
+                    this.setColour("#ffbf00")
+                }
+            }
+            Blockly.Blocks['numbers_create'] = {
+                init: function() {
+                    this.appendDummyInput().appendField('(').appendField(new Blockly.FieldNumber(0), "number").appendField(')')
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_operator'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Number")
+                    this.appendDummyInput().appendField(new Blockly.FieldDropdown([
+                        ["+", "(_ + "],
+                        ["-", "(_ - "],
+                        ["*", "(_ * "],
+                        ["/", "(_ / "],
+                        ["^", "power(_, "]
+                        ["%", "(_ %  "],
+                    ]), "operator")
+                    this.appendValueInput("valueB").setCheck("Number")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#59c059")
+                }
+            }
             gmlGenerator.forBlock['logic_if'] = function(block) {
                 const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
                 const statement = gmlGenerator.statementToCode(block, 'statement')
@@ -701,7 +754,7 @@
                 const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
                 return `${varname} += ${value}\n`
             }
-            gmlGenerator.forBlock['bvariables_get'] = (block) => varSuit(block.getFieldValue('varname'))
+            gmlGenerator.forBlock['bvariables_get'] = (block) => [varSuit(block.getFieldValue('varname')), 0]
             gmlGenerator.forBlock['ivariables_create'] = function(block) {
                 const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
                 const varname = varSuit(block.getFieldValue('varname'))
@@ -785,29 +838,66 @@
                 }
                 return `(${func})(...${inputs})\n`
             }
+            gmlGenerator.forBlock['strings_create'] = function(block) {
+                const text = block.getFieldValue('text').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')
+                return [`"${text}"`, 0]
+            }
+            gmlGenerator.forBlock['numbers_create'] = function(block) {
+                const number = block.getFieldValue('number')
+                return [`${number}`, 0]
+            }
+            gmlGenerator.forBlock['numbers_operator'] = gmlGenerator.forBlock['comparison_operator']
             Blockly.Extensions.register('hydra_toggle_next', function() {
                 const update = () => {
-                    const hasOutput = this.outputConnection && this.outputConnection.targetConnection;
+                    const hasOutput = this.outputConnection && this.outputConnection.targetConnection
                     if (hasOutput) {
                         if (this.nextConnection) {
                             if (this.nextConnection.isConnected()) {
-                                this.nextConnection.disconnect();
+                                this.nextConnection.disconnect()
                             }
-                            this.nextConnection.dispose();
-                            this.nextConnection = null;
+                            this.nextConnection.dispose()
+                            this.nextConnection = null
                         }
                     } else {
                         if (!this.nextConnection) {
-                            this.setNextStatement(true);
+                            this.setNextStatement(true)
                         }
                     }
                 };
                 this.setOnChange(function(event) {
-                    if (!this.workspace || this.isInFlyout) return;
+                    if (!this.workspace || this.isInFlyout) return
                     update();
                 });
-                setTimeout(update, 0);
-            });
+                setTimeout(update, 0)
+            })
+            function saveBlocks() {
+                const xml = Blockly.Xml.workspaceToDom(workspace);
+                const xmlText = Blockly.Xml.domToPrettyText(xml);
+                const blob = new Blob([xmlText], {type: "text/xml"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "blocks.xml";
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            function loadBlocks() {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = "text/xml";
+                input.onchange = (event) => {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const xmlText = e.target.result;
+                        const xml = Blockly.Xml.textToDom(xmlText);
+                        workspace.clear();
+                        Blockly.Xml.domToWorkspace(xml, workspace);
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            } 
             function exportCode() {
                 const code = gmlGenerator.workspaceToCode(workspace);
                 const blob = new Blob([code], {type: "text/plain"});
