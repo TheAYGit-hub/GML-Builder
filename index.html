@@ -49,15 +49,15 @@
                     <sep gap="8"></sep>
                     <block type="logic_if_report"></block>
                     <block type="logic_operator">
-                        <field name="operator">(_ &&</field>
+                        <field name="operator">(~ &&</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_operator">
-                        <field name="operator">(_ ||</field>
+                        <field name="operator">(~ ||</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_operator">
-                        <field name="operator">bool(_ ^</field>
+                        <field name="operator">bool(~ ^</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_not"></block>
@@ -174,30 +174,67 @@
                 <category name="Numbers" colour="#59c059">
                     <block type="numbers_create"></block>
                     <block type="numbers_operator">
-                        <field name="operator">(_ + </field>
+                        <field name="operator">(~ + ~)</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_operator">
-                        <field name="operator">(_ - </field>
+                        <field name="operator">(~ - ~)</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_operator">
-                        <field name="operator">(_ * </field>
+                        <field name="operator">(~ * ~)</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_operator">
-                        <field name="operator">(_ / </field>
+                        <field name="operator">(~ / ~)</field>
+                    </block>
+                    <block type="numbers_average">
+                        <field name="operator">array_reduce(~, min)</field>
                     </block>
                     <sep gap="8"></sep>
+                    <block type="numbers_average">
+                        <field name="operator">array_reduce(~, max)</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="numbers_average">
+                        <field name="operator">(array_reduce(~, function(a, b) {return a + b}) / array_length(~))</field>
+                    </block>
+                    <block type="numbers_function">
+                        <field name="operator">abs</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="numbers_round">
+                        <field name="operator">round</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="numbers_round_precision">
+                        <field name="operator">round</field>
+                    </block>
+                    <block type="numbers_random">
+                        <field name="type"></field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="numbers_random_range">
+                        <field name="type"></field>
+                    </block>
+                    <block type="numbers_set_seed"></block>
+                    <sep gap="8"></sep>
+                    <block type="numbers_randomize_seed"></block>
+                    <sep gap="8"></sep>
+                    <block type="numbers_get_seed"></block>
+                    <block type="numbers_is_number"></block>
+                    <sep gep="8"></sep>
+                    <block type="numbers_to_number"></block>
+                </category>
+                <category name="Geometry" colour="#6babff">
+                    <block type="geometry_2d_vector"></block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_3d_vector"></block>
+                </category>
+                <category name="Matrices" colour="#c2d916">
 
                 </category>
-                <category name="Geometry" colour="#59c059">
-                    
-                </category>
-                <category name="Matrices" colour="#59c059">
-
-                </category>
-                <category name="Date & Time" colour="#59c059">
+                <category name="Date & Time" colour="#59c074">
 
                 </category>
                 <category name="Arrays" colour="#ff661a">
@@ -254,12 +291,12 @@
                 init: function() {
                     this.appendValueInput("valueA").setCheck("Boolean")
                     this.appendDummyInput().appendField(new Blockly.FieldDropdown([
-                        ["and","(_ &&"],
-                        ["or","(_ ||"],
-                        ["xor","bool(_ ^"],
-                        ["nand","!(_ &&"],
-                        ["nor","!(_ ||"],
-                        ["xnor","!bool(_ ^"]
+                        ["and","(~ &&"],
+                        ["or","(~ ||"],
+                        ["xor","bool(~ ^"],
+                        ["nand","!(~ &&"],
+                        ["nor","!(~ ||"],
+                        ["xnor","!bool(~ ^"]
                     ]), "operator")
                     this.appendValueInput("valueB").setCheck("Boolean")
                     this.setOutput(true, "Boolean")
@@ -637,12 +674,15 @@
                 init: function() {
                     this.appendValueInput("valueA").setCheck("Number")
                     this.appendDummyInput().appendField(new Blockly.FieldDropdown([
-                        ["+", "(_ + "],
-                        ["-", "(_ - "],
-                        ["*", "(_ * "],
-                        ["/", "(_ / "],
-                        ["^", "power(_, "],
-                        ["%", "(_ %  "]
+                        ["+", "(~ + ~)"],
+                        ["-", "(~ - ~)"],
+                        ["*", "(~ * ~)"],
+                        ["/", "(~ / ~)"],
+                        "separator",
+                        ["^", "power(~, ~)"],
+                        ["root", "power(~, 1 / (~))"],
+                        ["log", "logn(~, ~)"],
+                        ["mod", "(~ % ~)"]
                     ]), "operator")
                     this.appendValueInput("valueB").setCheck("Number")
                     this.setOutput(true, "Number")
@@ -650,23 +690,151 @@
                     this.setColour("#59c059")
                 }
             }
-            Blockly.Blocks['geometry_2d_point'] = {
+            Blockly.Blocks['numbers_average'] = {
                 init: function() {
-                    this.appendValueInput("x").setCheck("Number").appendField("point x:")
-                    this.appendValueInput("y").setCheck("Number").appendField("y:")
-                    this.setOutput(true, "2D Point")
+                    this.appendValueInput("array").setCheck("Array").appendField(new Blockly.FieldDropdown([
+                        ["minimum", "array_reduce(~, min)"],
+                        ["maximum", "array_reduce(~, max)"],
+                        ["range", "(array_reduce(~, max) - array_reduce(~, min))"],
+                        "separator",
+                        ["mean", "(array_reduce(~, function(a, b) {return a + b}) / array_length(~))"],
+                        ["median", "(\n    round(array_length(~) / 2) == array_length(~) / 2\n    ? (~[array_length(~) / 2] + ~[array_length(~) / 2 - 1]) / 2\n    : ~[(array_length(~) - 1) / 2])"],
+                    ]), "operator").appendField("of array")
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_round'] = {
+                init: function() {
+                    this.appendValueInput("number").setCheck("Number").appendField(new Blockly.FieldDropdown([
+                        ["round", "round"],
+                        ["floor", "floor"],
+                        ["ceiling", "ceil"],
+                        ["fraction part", "frac"],
+                    ]), "operator").appendField("of")
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_round_precision'] = {
+                init: function() {
+                    this.appendValueInput("number").setCheck("Number").appendField(new Blockly.FieldDropdown([
+                        ["round", "round"],
+                        ["floor", "floor"],
+                        ["ceiling", "ceil"],
+                        ["fraction part", "frac"],
+                    ]), "operator").appendField("of")
+                    this.setOutput(true, "Number")
+                    this.appendValueInput("precision").setCheck("Number").appendField("to nearest")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_function'] = {
+                init: function() {
+                    this.appendValueInput("value").setCheck("Number").appendField(new Blockly.FieldDropdown([
+                        ["absolute value", "abs"],
+                        ["negative", "-"],
+                        ["sign", "sign"],
+                        "separator",
+                        ["expontential", "exp"],
+                        ["square root", "sqrt"],
+                        ["squared", "sqr"],
+                        "separator",
+                        ["natural logarithm", "ln"],
+                        ["common logarithm", "log10"],
+                    ]), "operator").appendField("of")
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_random'] = {
+                init: function() {
+                    this.appendValueInput("max").setCheck("Number").appendField("random").appendField(new Blockly.FieldDropdown([
+                        ["real", ""],
+                        ["integer", "i"],
+                    ]), "type").appendField("up to")
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_random_range'] = {
+                init: function() {
+                    this.appendValueInput("min").setCheck("Number").appendField("random").appendField(new Blockly.FieldDropdown([
+                        ["real", ""],
+                        ["integer", "i"],
+                    ]), "type").appendField("from")
+                    this.appendValueInput("max").setCheck("Number").setAlign(1).appendField("to")
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_set_seed'] = {
+                init: function() {
+                    this.appendValueInput("seed").setCheck("Number").appendField("set seed to")
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_randomize_seed'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("randomize seed")
+                    this.setPreviousStatement(true, "Block")
+                    this.setNextStatement(true, "Block")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_get_seed'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("get seed")
+                    this.setOutput(true, "Number")
+                    this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['numbers_is_number'] = {
+                init: function() {
+                    this.appendValueInput("value").appendField("is")
+                    this.appendDummyInput().appendField("a").appendField(new Blockly.FieldDropdown([
+                        ["numeric", "is_numeric(~)"],
+                        ["real","is_real(~)"],
+                        ["integer","frac(~) == 0"],
+                        ["int32", "is_int32(~)"],
+                        ["int64", "is_int64(~)"]
+                    ]), "type").appendField("number?")
+                    this.setOutput(true, "Boolean")
                     this.setInputsInline(true)
                     this.setColour("#59c059")
                 }
             }
-            Blockly.Blocks['geometry_3d_point'] = {
+            Blockly.Blocks['numbers_to_number'] = {
                 init: function() {
-                    this.appendValueInput("x").setCheck("Number").appendField("point x:")
-                    this.appendValueInput("y").setCheck("Number").appendField("y:")
-                    this.appendValueInput("z").setCheck("Number").appendField("z:")
-                    this.setOutput(true, "3D Point")
+                    this.appendValueInput("value").setCheck("Number").appendField("convert")
+                    this.appendDummyInput().appendField("to").appendField(new Blockly.FieldDropdown([
+                        ["real","real"],
+                        ["integer","floor"],
+                        ["int64", "is_int64"]
+                    ]), "type").appendField("number?")
+                    this.setOutput(true, "Number")
                     this.setInputsInline(true)
                     this.setColour("#59c059")
+                }
+            }
+            Blockly.Blocks['geometry_2d_vector'] = {
+                init: function() {
+                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("vector x:")
+                    this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
+                    this.setOutput(true, "2D Point")
+                    this.setColour("#6babff")
+                }
+            }
+            
+            Blockly.Blocks['geometry_3d_vector'] = {
+                init: function() {
+                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("vector x:")
+                    this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
+                    this.appendValueInput("z").setCheck("Number").setAlign(1).appendField("z:")
+                    this.setOutput(true, "3D Point")
+                    this.setColour("#6babff")
                 }
             }
             gmlGenerator.forBlock['logic_if'] = function(block) {
@@ -694,7 +862,7 @@
             }
             gmlGenerator.forBlock['logic_operator'] = function(block) {
                 const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || 'false'
-                const operator = block.getFieldValue('operator').split('_')
+                const operator = block.getFieldValue('operator').split('~')
                 const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || 'false'
                 return [operator[0] + valueA + operator[1] + valueB + ' )', 0]
             }
@@ -768,7 +936,7 @@
             gmlGenerator.forBlock['comparison_get_epsilon'] = function(block) {
                 return ['math_get_epsilon()', 0]
             }
-            varSuit = (text) => text.match(/^[0-9]/) ? "_" : "" + text.replace(/[^a-zA-Z0-9_]/g, '_')
+            varSuit = (text) => text // todo: actually program varSuit function, to convert text to variable syntax
             gmlGenerator.forBlock['bvariables_create'] = (block) => `${varSuit(block.getFieldValue('varname'))} = undefined\n`
             gmlGenerator.forBlock['bvariables_create_scope'] = (block) => `let ${varSuit(block.getFieldValue('varname'))} = undefined\n`
             gmlGenerator.forBlock['bvariables_delete'] = (block) => `delete ${varSuit(block.getFieldValue('varname'))}\n`
@@ -794,6 +962,7 @@
                 const varname = varSuit(block.getFieldValue('varname'))
                 return `delete ${instance}.${varname}\n`
             }
+            
             gmlGenerator.forBlock['ivariables_exists'] = function(block) {
                 const instance = gmlGenerator.valueToCode(block, 'instance', 0) || 'undefined'
                 const varname = varSuit(block.getFieldValue('varname'))
@@ -858,7 +1027,7 @@
                 }
                 return `(function ${name}(${inputs}) {\n${statement}})`
             }
-            gmlGenerator.forBlock['function_return'] = (block) => `return ${varSuit(block.getFieldValue('value'))}\n`
+            gmlGenerator.forBlock['functions_return'] = (block) => `return ${varSuit(block.getFieldValue('value'))}\n`
             gmlGenerator.forBlock['functions_execute'] = function(block) {
                 const func = gmlGenerator.valueToCode(block, 'func', 0) || 'undefined'
                 const inputs = gmlGenerator.valueToCode(block, 'inputs', 0) || 'undefined'
@@ -875,18 +1044,67 @@
                 const number = block.getFieldValue('number')
                 return [`${number}`, 0]
             }
-            gmlGenerator.forBlock['numbers_operator'] = gmlGenerator.forBlock['comparison_operator']
-            gmlGenerator.forBlock['geometry_2d_point'] = function(block) {
+            gmlGenerator.forBlock['numbers_operator'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '0'
+                const operator = block.getFieldValue('operator').split('~')
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '0'
+                return [operator[0] + valueA + operator[1] + valueB + (operator[2]), 0]
+            }
+            gmlGenerator.forBlock['numbers_average'] = function(block) {
+                const array = gmlGenerator.valueToCode(block, 'array', 0) || '[]'
+                const operator = block.getFieldValue('operator').split('~')
+                return [operator[0] + array + operator[1] + array + operator[2], 0]
+            }
+            gmlGenerator.forBlock['numbers_round'] = function(block) {
+                const number = gmlGenerator.valueToCode(block, 'number', 0) || '0'
+                const operator = block.getFieldValue('operator')
+                return [`${operator}(${number})`, 0]
+            }
+            gmlGenerator.forBlock['numbers_round_precision'] = function(block) {
+                const number = gmlGenerator.valueToCode(block, 'number', 0) || '0'
+                const operator = block.getFieldValue('operator')
+                const precision = gmlGenerator.valueToCode(block, 'precision', 0) || '1'
+                return [`(${operator}((${number}) / (${precision})) * ${precision})`, 0]
+            }
+            gmlGenerator.forBlock['geometry_2d_vector'] = function(block) {
                 const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
                 const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
                 return [`{x: ${x}, y: ${y}}`, 0]
             }
-            gmlGenerator.forBlock['geometry_3d_point'] = function(block) {
+            gmlGenerator.forBlock['geometry_3d_vector'] = function(block) {
                 const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
                 const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
                 const z = gmlGenerator.valueToCode(block, 'z', 0) || '0'
                 return [`{x: ${x}, y: ${y}, z: ${z}}`, 0]
             }
+            gmlGenerator.forBlock['numbers_function'] = gmlGenerator.forBlock['numbers_round']
+            gmlGenerator.forBlock['numbers_random'] = function(block) {
+                const max = gmlGenerator.valueToCode(block, 'max', 0) || '0'
+                const type = block.getFieldValue('type')
+                return [`${type}random(${max})`, 0]
+            }
+            gmlGenerator.forBlock['numbers_random_range'] = function(block) {
+                const min = gmlGenerator.valueToCode(block, 'min', 0) || '0'
+                const max = gmlGenerator.valueToCode(block, 'max', 0) || '0'
+                const type = block.getFieldValue('type')
+                return [`${type}random_range(${min}, ${max})`, 0]
+            }
+            gmlGenerator.forBlock['numbers_set_seed'] = function(block) {
+                const seed = gmlGenerator.valueToCode(block, 'seed', 0) || '0'
+                return `random_set_seed(${seed})\n`
+            }
+            gmlGenerator.forBlock['numbers_randomize_seed'] = function(block) {
+                return `randomize()\n`
+            }
+            gmlGenerator.forBlock['numbers_get_seed'] = function(block) {
+                return [`random_get_seed()`, 0]
+            }
+            gmlGenerator.forBlock['numbers_is_number'] = function(block) {
+                const value = gmlGenerator.valueToCode(block, 'value', 0)
+                const type = block.getFieldValue('type').split('~')
+                return [operator[0] + value + operator[1], 0]
+            }
+            gmlGenerator.forBlock['numbers_to_number'] = gmlGenerator.forBlock['numbers_is_number']
             Blockly.Extensions.register('hydra_toggle_next', function() {
                 const update = () => {
                     const hasOutput = this.outputConnection && this.outputConnection.targetConnection
