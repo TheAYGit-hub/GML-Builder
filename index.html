@@ -33,10 +33,11 @@
     </head>
     <body>
         <div id="header">
-            <button onclick="saveBlocks()">Save Blocks</button>
-            <button onclick="loadBlocks()">Load Blocks</button>
-            <button onclick="exportCode()">Export Code</button>
-            <button onclick="workspace.clear()">Clear Workspace</button>
+            <img src="logo.svg" width="45" height="32">
+            <button onclick="saveBlocks()">Save</button>
+            <button onclick="loadBlocks()">Load</button>
+            <button onclick="exportCode()">Export</button>
+            <button onclick="workspace.clear()">Clear</button>
             <span id="output"></span>
         </div>
         <div id="blocklyDiv"></div>
@@ -197,7 +198,7 @@
                         <field name="operator">&gt;</field>
                     </block>
                     <label text="Advanced"></label>
-                    <gap sep="8"></gap>
+                    <sep gap="8"></sep>
                     <block type="comparison_set_epsilon">
                         <value name="value">
                             <shadow type="numbers_create">
@@ -476,17 +477,15 @@
 
                 </category>
                 <category name="Structs" colour="#748bee">
-
+                    
                 </category>
             </category>
         </xml>
         <script>
-            console.log(document.getElementById('toolbox'))
-        </script>
-        <script>
             const gmlGenerator = new Blockly.Generator('GML')
             const workspace = Blockly.inject('blocklyDiv', {
-                toolbox: document.getElementById('toolbox')
+                toolbox: document.getElementById('toolbox'),
+                renderer: "thrasos"
             })
             Blockly.Blocks['logic_if'] = {
                 init: function() {
@@ -762,7 +761,7 @@
             }
             Blockly.Blocks['bvariables_get'] = {
                 init: function() {
-                    this.appendDummyInput().appendField('get var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
+                    this.appendDummyInput().appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setOutput(true)
                     this.setColour("#ff8c1a")
                 }
@@ -812,7 +811,7 @@
             }
             Blockly.Blocks['ivariables_get'] = {
                 init: function() {
-                    this.appendValueInput('instance').setCheck("Instance").appendField('get var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('from instance')
+                    this.appendValueInput('instance').setCheck("Instance").appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('from instance')
                     this.setOutput(true)
                     this.setColour("#ec3b59")
                 }
@@ -858,7 +857,7 @@
             }
             Blockly.Blocks['gvariables_get'] = {
                 init: function() {
-                    this.appendDummyInput().appendField('get global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
+                    this.appendDummyInput().appendField('global var').appendField(new Blockly.FieldTextInput('variable'), 'varname')
                     this.setOutput(true)
                     this.setColour("#6218ed")
                 }
@@ -1090,6 +1089,26 @@
                     this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
                     this.appendValueInput("z").setCheck("Number").setAlign(1).appendField("z:")
                     this.setOutput(true, "Point")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_operator'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Number")
+                    this.appendDummyInput().appendField(new Blockly.FieldDropdown([
+                        ["+", "(~ + ~)"],
+                        ["-", "(~ - ~)"],
+                        ["*", "(~ * ~)"],
+                        ["/", "(~ / ~)"],
+                        "separator",
+                        ["^", "power(~, ~)"],
+                        ["root", "power(~, 1 / (~))"],
+                        ["log", "logn(~, ~)"],
+                        ["mod", "(~ % ~)"]
+                    ]), "operator")
+                    this.appendValueInput("valueB").setCheck("Number")
+                    this.setOutput(true, "Number")
                     this.setInputsInline(true)
                     this.setColour("#6babff")
                 }
@@ -1377,9 +1396,7 @@
                     const hasOutput = this.outputConnection && this.outputConnection.targetConnection
                     if (hasOutput) {
                         if (this.nextConnection) {
-                            if (this.nextConnection.isConnected()) {
-                                this.nextConnection.disconnect()
-                            }
+                            this.nextConnection.disconnect()
                             this.nextConnection.dispose()
                             this.nextConnection = null
                         }
