@@ -17,7 +17,7 @@
                 display: flex;
                 align-items: center;
                 padding: 0 10px;
-                gap: 10px;
+                gap: 10px
             }
             button {
                 padding: 6px 10px;
@@ -33,45 +33,73 @@
     </head>
     <body>
         <div id="header">
-            <button onclick="saveBlocks()">Save</button>
-            <button onclick="loadBlocks()">Load</button>
-            <button onclick="exportCode()">Export</button>
-            <button onclick="workspace.clear()">Clear</button>
+            <button onclick="saveBlocks()">Save Blocks</button>
+            <button onclick="loadBlocks()">Load Blocks</button>
+            <button onclick="exportCode()">Export Code</button>
+            <button onclick="workspace.clear()">Clear Workspace</button>
             <span id="output"></span>
         </div>
         <div id="blocklyDiv"></div>
         <xml id="toolbox" style="display: none">
             <category name="Control">
                 <category name="Logic" colour="#4c97ff">
-                    <block type="logic_if"></block>
+                    <block type="logic_if">
+                        <value name="cond">
+                            <shadow type="logic_true"></shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="logic_if_else"></block>
+                    <block type="logic_if_else">
+                        <value name="cond">
+                            <shadow type="logic_true"></shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="logic_if_report"></block>
+                    <block type="logic_if_report">
+                        <value name="cond">
+                            <shadow type="logic_true"></shadow>
+                        </value>
+                    </block>
                     <block type="logic_operator">
+                        <value name="valueA">
+                            <shadow type="logic_true"></shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="logic_true"></shadow>
+                        </value>
                         <field name="operator">(~ &&</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_operator">
+                        <value name="valueA">
+                            <shadow type="logic_true"></shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="logic_false"></shadow>
+                        </value>
                         <field name="operator">(~ ||</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="logic_operator">
+                        <value name="valueA">
+                            <shadow type="logic_false"></shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="logic_true"></shadow>
+                        </value>
                         <field name="operator">bool(~ ^</field>
                     </block>
                     <sep gap="8"></sep>
-                    <block type="logic_not"></block>
-                    <block type="logic_bool">
-                        <field name="bool">true</field>
+                    <block type="logic_not">
+                        <value name="value">
+                            <shadow type="logic_true"></shadow>
+                        </value>
                     </block>
+                    <block type="logic_true"></block>
                     <sep gap="8"></sep>
-                    <block type="logic_bool">
-                        <field name="bool">false</field>
-                    </block>
+                    <block type="logic_false"></block>
                     <sep gap="8"></sep>
-                    <block type="logic_bool">
-                        <field name="bool">undefined</field>
-                    </block>
+                    <block type="logic_undefined"></block>
                     <block type="logic_is_bool"></block>
                     <sep gap="8"></sep>
                     <block type="logic_to_bool"></block>
@@ -79,7 +107,13 @@
                 <category name="Loops" colour="#0fbd8c">
                     <block type="loops_always"></block>
                     <sep gap="8"></sep>
-                    <block type="loops_repeat"></block>
+                    <block type="loops_repeat">
+                        <value name="times">
+                            <shadow type="numbers_create">
+                                <field name="number">5</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="loops_forever"></block>
                     <sep gap="8"></sep>
@@ -87,19 +121,68 @@
                     <block type="loops_on_start"></block>
                     <sep gap="8"></sep>
                     <block type="loops_while_until">
+                        <value name="cond">
+                            <shadow type="logic_true"></shadow>
+                        </value>
                         <field name="act">while</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="loops_while_until">
+                        <value name="cond">
+                            <shadow type="logic_true"></shadow>
+                        </value>
                         <field name="act">until</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="loops_continue"></block>
+                    <label text="Advanced"></label>
+                    <sep gap="8"></sep>
+                    <block type="loops_for_var">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="cond">
+                            <shadow type="comparison_operator">
+                                <value name="valueA">
+                                    <shadow type="bvariables_get"></shadow>
+                                </value>
+                                <value name="valueB">
+                                    <shadow type="numbers_create">
+                                        <field name="number">4</field>
+                                    </shadow>
+                                </value>
+                                <field name="operator">&lt;</field>
+                            </shadow>
+                        </value>
+                        <value name="set">
+                            <shadow type="numbers_operator">
+                                <value name="valueA">
+                                    <shadow type="bvariables_get"></shadow>
+                                </value>
+                                <value name="valueB">
+                                    <shadow type="numbers_create">
+                                        <field name="number">1</field>
+                                    </shadow>
+                                </value>
+                                <field name="operator">(~ + ~)</field>
+                            </shadow>
+                        </value>
+                    </block>
                 </category>
                 <category name="Comparison" colour="#a9a9a9">
-                    <block type="comparison_switch"></block>
+                    <block type="comparison_switch">
+                        <value name="value">
+                            <shadow type="bvariables_get"></shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="comparison_case"></block>
+                    <block type="comparison_case">
+                        <value name="value">
+                            <shadow type="strings_create"></shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="comparison_default"></block>
                     <block type="comparison_operator">
@@ -113,7 +196,15 @@
                     <block type="comparison_operator">
                         <field name="operator">&gt;</field>
                     </block>
-                    <block type="comparison_set_epsilon"></block>
+                    <label text="Advanced"></label>
+                    <gap sep="8"></gap>
+                    <block type="comparison_set_epsilon">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="comparison_get_epsilon"></block>
                 </category>
@@ -127,9 +218,21 @@
                     <block type="bvariables_delete"></block>
                     <sep gap="8"></sep>
                     <block type="bvariables_exists"></block>
-                    <block type="bvariables_set"></block>
+                    <block type="bvariables_set">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="bvariables_change"></block>
+                    <block type="bvariables_change">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">1</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="bvariables_get"></block>
                 </category>
@@ -139,9 +242,21 @@
                     <block type="gvariables_delete"></block>
                     <sep gap="8"></sep>
                     <block type="gvariables_exists"></block>
-                    <block type="gvariables_set"></block>
+                    <block type="gvariables_set">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="gvariables_change"></block>
+                    <block type="gvariables_change">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">1</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="gvariables_get"></block>
                     <block type="gvariables_global_struct"></block>
@@ -152,9 +267,21 @@
                     <block type="ivariables_delete"></block>
                     <sep gap="8"></sep>
                     <block type="ivariables_exists"></block>
-                    <block type="ivariables_set"></block>
+                    <block type="ivariables_set">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="ivariables_change"></block>
+                    <block type="ivariables_change">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">1</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="ivariables_get"></block>
                 </category>
@@ -174,18 +301,58 @@
                 <category name="Numbers" colour="#59c059">
                     <block type="numbers_create"></block>
                     <block type="numbers_operator">
+                        <value name="valueA">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
                         <field name="operator">(~ + ~)</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_operator">
+                        <value name="valueA">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
                         <field name="operator">(~ - ~)</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_operator">
+                        <value name="valueA">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
                         <field name="operator">(~ * ~)</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_operator">
+                        <value name="valueA">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
                         <field name="operator">(~ / ~)</field>
                     </block>
                     <block type="numbers_average">
@@ -200,24 +367,65 @@
                         <field name="operator">(array_reduce(~, function(a, b) {return a + b}) / array_length(~))</field>
                     </block>
                     <block type="numbers_function">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
                         <field name="operator">abs</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_round">
+                        <value name="number">
+                            <shadow type="numbers_create">
+                                <field name="number">2.5</field>
+                            </shadow>
+                        </value>
                         <field name="operator">round</field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_round_precision">
+                        <value name="number">
+                            <shadow type="numbers_create">
+                                <field name="number">2.5</field>
+                            </shadow>
+                        </value>
+                        <value name="precision">
+                            <shadow type="numbers_create">
+                                <field name="number">1</field>
+                            </shadow>
+                        </value>
                         <field name="operator">round</field>
                     </block>
                     <block type="numbers_random">
+                        <value name="max">
+                            <shadow type="numbers_create">
+                                <field name="number">10</field>
+                            </shadow>
+                        </value>
                         <field name="type"></field>
                     </block>
                     <sep gap="8"></sep>
                     <block type="numbers_random_range">
+                        <value name="min">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="max">
+                            <shadow type="numbers_create">
+                                <field name="number">10</field>
+                            </shadow>
+                        </value>
                         <field name="type"></field>
                     </block>
-                    <block type="numbers_set_seed"></block>
+                    <block type="numbers_set_seed">
+                        <value name="seed">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
                     <block type="numbers_randomize_seed"></block>
                     <sep gap="8"></sep>
@@ -227,9 +435,36 @@
                     <block type="numbers_to_number"></block>
                 </category>
                 <category name="Geometry" colour="#6babff">
-                    <block type="geometry_2d_vector"></block>
+                    <block type="geometry_2d_vector">
+                        <value name="x">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <sep gap="8"></sep>
-                    <block type="geometry_3d_vector"></block>
+                    <block type="geometry_3d_vector">
+                        <value name="x">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="z">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                 </category>
                 <category name="Matrices" colour="#c2d916">
 
@@ -311,14 +546,24 @@
                     this.setColour("#4c97ff")
                 }
             }
-            Blockly.Blocks['logic_bool'] = {
+            Blockly.Blocks['logic_true'] = {
                 init: function() {
-                    this.appendDummyInput().appendField(new Blockly.FieldDropdown([
-                        ["true","true"],
-                        ["false","false"],
-                        ["undefined","undefined"]
-                    ]), "bool")
+                    this.appendDummyInput().appendField("true")
                     this.setOutput(true, "Boolean")
+                    this.setColour("#4c97ff")
+                }
+            }
+            Blockly.Blocks['logic_false'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("false")
+                    this.setOutput(true, "Boolean")
+                    this.setColour("#4c97ff")
+                }
+            }
+            Blockly.Blocks['logic_undefined'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("undefined")
+                    this.setOutput(true)
                     this.setColour("#4c97ff")
                 }
             }
@@ -394,6 +639,16 @@
             Blockly.Blocks['loops_continue'] = {
                 init: function() {
                     this.appendDummyInput().appendField("continue")
+                    this.setPreviousStatement(true, "Block")
+                    this.setColour("#0fbd8c")
+                }
+            }
+            Blockly.Blocks['loops_for_var'] = {
+                init: function() {
+                    this.appendValueInput("value").setAlign(1).appendField("set var").appendField(new Blockly.FieldTextInput('variable'), "var").appendField("to")
+                    this.appendValueInput("cond").setAlign(1).setCheck("Boolean").appendField("and repeat while")
+                    this.appendValueInput("set").setAlign(1).setCheck("Number").appendField("during")
+                    this.appendStatementInput("statement").setCheck("Block")
                     this.setPreviousStatement(true, "Block")
                     this.setColour("#0fbd8c")
                 }
@@ -665,7 +920,7 @@
             }
             Blockly.Blocks['numbers_create'] = {
                 init: function() {
-                    this.appendDummyInput().appendField('(').appendField(new Blockly.FieldNumber(0), "number").appendField(')')
+                    this.appendDummyInput().appendField(new Blockly.FieldNumber(0), "number")
                     this.setOutput(true, "Number")
                     this.setColour("#59c059")
                 }
@@ -813,7 +1068,7 @@
                         ["real","real"],
                         ["integer","floor"],
                         ["int64", "is_int64"]
-                    ]), "type").appendField("number?")
+                    ]), "type").appendField("number")
                     this.setOutput(true, "Number")
                     this.setInputsInline(true)
                     this.setColour("#59c059")
@@ -821,19 +1076,21 @@
             }
             Blockly.Blocks['geometry_2d_vector'] = {
                 init: function() {
-                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("vector x:")
+                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("x:")
                     this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
-                    this.setOutput(true, "2D Point")
+                    this.setOutput(true, "Point")
+                    this.setInputsInline(true)
                     this.setColour("#6babff")
                 }
             }
             
             Blockly.Blocks['geometry_3d_vector'] = {
                 init: function() {
-                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("vector x:")
+                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("x:")
                     this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
                     this.appendValueInput("z").setCheck("Number").setAlign(1).appendField("z:")
-                    this.setOutput(true, "3D Point")
+                    this.setOutput(true, "Point")
+                    this.setInputsInline(true)
                     this.setColour("#6babff")
                 }
             }
@@ -867,7 +1124,9 @@
                 return [operator[0] + valueA + operator[1] + valueB + ' )', 0]
             }
             gmlGenerator.forBlock['logic_not'] = (block) => [`!(${gmlGenerator.valueToCode(block, 'value', 0) || 'false'})`, 0]
-            gmlGenerator.forBlock['logic_bool'] = (block) => [block.getFieldValue('bool'), 0]
+            gmlGenerator.forBlock['logic_true'] = () => ["true", 0]
+            gmlGenerator.forBlock['logic_false'] = () => ["false", 0]
+            gmlGenerator.forBlock['logic_undefined'] = () => ["undefined", 0]
             gmlGenerator.forBlock['logic_is_bool'] = (block) => [`is_bool(${gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'})`, 0]
             gmlGenerator.forBlock['logic_to_bool'] = (block) => [`bool(${gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'})`, 0]
             gmlGenerator.forBlock['loops_always'] = function(block) {
@@ -905,6 +1164,14 @@
                 } catch (e) {
                     document.getElementById("output").textContent = "Error: " + e;
                 }
+            }
+            gmlGenerator.forBlock['loops_for_var'] = function() {
+                const varname = block.getFieldValue('var')
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
+                const cond = gmlGenerator.valueToCode(block, 'cond', 0) || 'false'
+                const set = gmlGenerator.valueToCode(block, 'set', 0) || 'undefined'
+                const statement = gmlGenerator.statementToCode(block, 'statement')
+                return `for (var ${varname} = ${value}; ${cond}; ${varname} = ${set}) {\n${statement}}\n`
             }
             gmlGenerator.forBlock['comparison_switch'] = function(block) {
                 const value = gmlGenerator.valueToCode(block, 'value', 0) || 'undefined'
@@ -1066,17 +1333,6 @@
                 const precision = gmlGenerator.valueToCode(block, 'precision', 0) || '1'
                 return [`(${operator}((${number}) / (${precision})) * ${precision})`, 0]
             }
-            gmlGenerator.forBlock['geometry_2d_vector'] = function(block) {
-                const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
-                const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
-                return [`{x: ${x}, y: ${y}}`, 0]
-            }
-            gmlGenerator.forBlock['geometry_3d_vector'] = function(block) {
-                const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
-                const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
-                const z = gmlGenerator.valueToCode(block, 'z', 0) || '0'
-                return [`{x: ${x}, y: ${y}, z: ${z}}`, 0]
-            }
             gmlGenerator.forBlock['numbers_function'] = gmlGenerator.forBlock['numbers_round']
             gmlGenerator.forBlock['numbers_random'] = function(block) {
                 const max = gmlGenerator.valueToCode(block, 'max', 0) || '0'
@@ -1105,6 +1361,17 @@
                 return [operator[0] + value + operator[1], 0]
             }
             gmlGenerator.forBlock['numbers_to_number'] = gmlGenerator.forBlock['numbers_is_number']
+            gmlGenerator.forBlock['geometry_2d_vector'] = function(block) {
+                const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
+                const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
+                return [`{x: ${x}, y: ${y}}`, 0]
+            }
+            gmlGenerator.forBlock['geometry_3d_vector'] = function(block) {
+                const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
+                const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
+                const z = gmlGenerator.valueToCode(block, 'z', 0) || '0'
+                return [`{x: ${x}, y: ${y}, z: ${z}}`, 0]
+            }
             Blockly.Extensions.register('hydra_toggle_next', function() {
                 const update = () => {
                     const hasOutput = this.outputConnection && this.outputConnection.targetConnection
