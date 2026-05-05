@@ -2,18 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Blockly GitHub Pages App</title>
+        <title>GML-Builder</title>
         <script src="https://unpkg.com/blockly/blockly.min.js"></script>
         <style>
             html, body {
                 height: 100%;
                 margin: 0;
-                font-family: Arial, sans-serif;
+                font-family: Arial, sans-serif
             }
             #header {
                 height: 50px;
                 background: #222;
-                color: white;
+                color: #222;
                 display: flex;
                 align-items: center;
                 padding: 0 10px;
@@ -22,12 +22,15 @@
             button {
                 padding: 6px 10px;
                 border: none;
-                cursor: pointer;
-                border-radius: 4px;
+                cursor: Vectorer;
+                border-radius: 4px
             }
             #blocklyDiv {
                 height: calc(100% - 50px);
-                width: 100%;
+                width: 100%
+            }
+            .blocklyText {
+                font-family: monospace !important
             }
         </style>
     </head>
@@ -42,6 +45,11 @@
         </div>
         <div id="blocklyDiv"></div>
         <xml id="toolbox" style="display: none">
+            <category name="Motion">
+                <catgory name="Position">
+
+                </catgory>
+            </category>
             <category name="Control">
                 <category name="Logic" colour="#4c97ff">
                     <block type="logic_if">
@@ -262,7 +270,7 @@
                     <block type="gvariables_get"></block>
                     <block type="gvariables_global_struct"></block>
                 </category>
-                <category name="Instance Vars" colour="#ec3b59">
+                <category name="Instance Vars" colour="#8c0b50">
                     <block type="ivariables_create"></block>
                     <sep gap="8"></sep>
                     <block type="ivariables_delete"></block>
@@ -286,6 +294,7 @@
                     <sep gap="8"></sep>
                     <block type="ivariables_get"></block>
                 </category>
+                <sep></sep>
                 <category name="Functions" colour="#ff6680">
                     <block type="functions_create"></block>
                     <sep gap="8"></sep>
@@ -293,6 +302,16 @@
                     <sep gap="8"></sep>
                     <block type="functions_return"></block>
                     <block type="functions_execute"></block>
+                </category>
+                <category name="Structs" colour="#748bee">
+                    <block type="structs_create"></block>
+                    <sep gap="8"></sep>
+                    <block type="structs_var"></block>
+                    <sep gap="8"></sep>
+                    <block type="structs_var_value"></block>
+                    <sep gap="8"></sep>
+                </category>
+                <category name="Enumerators" colour="#ec3b59">
                 </category>
             </category>
             <category name="Outputs">
@@ -435,7 +454,61 @@
                     <sep gap="8"></sep>
                     <block type="numbers_to_number"></block>
                 </category>
+                <category name="Arrays" colour="#ff661a">
+                    <block type="arrays_create"></block>
+                    <sep gap="8"></sep>
+                    <block type="arrays_item"></block>
+                </category>
+                <sep></sep>
                 <category name="Geometry" colour="#6babff">
+                    <label text="Angles"></label>
+                    <sep gap="8"></sep>
+                    <block type="geometry_pi"></block>
+                    <block type="geometry_func">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <field name="type">sin(~)</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_func">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <field name="type">cos(~)</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_func">
+                        <value name="value">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <field name="type">tan(~)</field>
+                    </block>
+                    <block type="geometry_angle_difference">
+                        <value name="valueA">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <field name="operator">(~ / ~)</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_angle_format"></block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_distance_to_object"></block>
+                    <label text="Vector Arithmatic"></label>
+                    <sep gap="8"></sep>
                     <block type="geometry_2d_vector">
                         <value name="x">
                             <shadow type="numbers_create">
@@ -449,6 +522,18 @@
                         </value>
                     </block>
                     <sep gap="8"></sep>
+                    <block type="geometry_2d_polar">
+                        <value name="r">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="theta">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
                     <block type="geometry_3d_vector">
                         <value name="x">
                             <shadow type="numbers_create">
@@ -466,31 +551,509 @@
                             </shadow>
                         </value>
                     </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_3d_spherical">
+                        <value name="rho">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="theta">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="phi">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_3d_cylindrical">
+                        <value name="r">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="theta">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                        <value name="z">
+                            <shadow type="numbers_create">
+                                <field name="number">0</field>
+                            </shadow>
+                        </value>
+                    </block>
+                    <block type="geometry_axis">
+                        <value name="value">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="axis">~.x</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_axis">
+                        <value name="value">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="axis">~.y</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_axis">
+                        <value name="value">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="axis">~.z</field>
+                    </block>
+                    <block type="geometry_operator">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="operator">~ + ~</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_operator">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="operator">~ - ~</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_operator">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="operator">~ * ~</field>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_operator">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <field name="operator">~ / ~</field>
+                    </block>
+                    <label text="2D Vectors"></label>
+                    <sep gap="8"></sep>
+                    <block type="geometry_direction">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_2d_distance_between">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_2d_dot_product">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_2d_dot_product_normalized">
+                        <value name="valueA">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <block type="geometry_distance_to_vector">
+                        <value name="vector">
+                            <shadow type="geometry_2d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <label text="3D Vectors"></label>
+                    <sep gap="8"></sep>
+                    <block type="geometry_3d_distance_between">
+                        <value name="valueA">
+                            <shadow type="geometry_3d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_3d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_3d_dot_product">
+                        <value name="valueA">
+                            <shadow type="geometry_3d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_3d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
+                    <sep gap="8"></sep>
+                    <block type="geometry_3d_dot_product_normalized">
+                        <value name="valueA">
+                            <shadow type="geometry_3d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                        <value name="valueB">
+                            <shadow type="geometry_3d_vector">
+                                <value name="x">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="y">
+                                    <shadow type="numbers_create">
+                                        <field name="number">0</field>
+                                    </shadow>
+                                </value>
+                            </shadow>
+                        </value>
+                    </block>
                 </category>
                 <category name="Matrices" colour="#c2d916">
-
+                    
                 </category>
                 <category name="Date & Time" colour="#59c074">
-
-                </category>
-                <category name="Arrays" colour="#ff661a">
-
-                </category>
-                <category name="Structs" colour="#748bee">
                     
                 </category>
             </category>
         </xml>
         <script>
+            Blockly.Theme.defineTheme('dark', {
+                name: 'dark',
+                base: Blockly.Themes.Classic,
+                componentStyles: {
+                    workspaceBackgroundColour: '#1e1e1e',
+                    toolboxBackgroundColour: '#333',
+                    toolboxForegroundColour: '#fff',
+                    flyoutBackgroundColour: '#252526',
+                    flyoutForegroundColour: '#ccc',
+                    flyoutOpacity: 1,
+                    scrollbarColour: '#797979',
+                    insertionMarkerColour: '#fff',
+                    insertionMarkerOpacity: 0.3,
+                    scrollbarOpacity: 0.4,
+                    cursorColour: '#d0d0d0'
+                }
+            })
             const gmlGenerator = new Blockly.Generator('GML')
             const workspace = Blockly.inject('blocklyDiv', {
                 toolbox: document.getElementById('toolbox'),
-                renderer: "thrasos"
+                renderer: 'geras',
+                theme: 'dark'
+            })
+            Blockly.Tooltip.setCustomTooltip(function (div, element) {
+                if (element instanceof Blockly.BlockSvg) div.style.backgroundColor = element.getColour()
+                const tip = Blockly.Tooltip.getTooltipOfObject(element)
+                const text = document.createElement('div')
+                text.textContent = tip
+                const container = document.createElement('div')
+                container.style.display = 'flex'
+                if (element.tooltipImg) {
+                    const img = document.createElement('img')
+                    img.setAttribute('src', element.tooltipImg)
+                    container.appendChild(img)
+                }
+                container.appendChild(text)
+                div.appendChild(container)
             })
             Blockly.Blocks['logic_if'] = {
                 init: function() {
                     this.appendValueInput("cond").setCheck("Boolean").appendField("if")
-                    this.appendStatementInput("statement").setCheck("Block")
+                    this.appendStatementInput("statement").setCheck("Block").appendField("then")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true)
@@ -501,9 +1064,8 @@
             Blockly.Blocks['logic_if_else'] = {
                 init: function() {
                     this.appendValueInput("cond").setCheck("Boolean").appendField("if")
-                    this.appendStatementInput("statement").setCheck("Block")
-                    this.appendDummyInput().appendField("else")
-                    this.appendStatementInput("elseStatement")
+                    this.appendStatementInput("statement").setCheck("Block").appendField("then")
+                    this.appendStatementInput("elseStatement").appendField("else")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setOutput(true)
@@ -517,7 +1079,6 @@
                     this.appendValueInput("valueA").appendField("then")
                     this.appendValueInput("valueB").appendField("else")
                     this.setOutput(true)
-                    this.setInputsInline(true)
                     this.setColour("#4c97ff")
                 }
             }
@@ -603,7 +1164,7 @@
             Blockly.Blocks['loops_forever'] = {
                 init: function() {
                     this.appendDummyInput().appendField("forever")
-                    this.appendStatementInput("statement").setCheck("Block")
+                    this.appendStatementInput("statement").setCheck("Block").appendField("do")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setColour("#0fbd8c")
@@ -629,7 +1190,7 @@
                         ["while","while"],
                         ["until","until"],
                     ]), "act")
-                    this.appendStatementInput("statement").setCheck("Block")
+                    this.appendStatementInput("statement").setCheck("Block").appendField("do")
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
                     this.setColour("#0fbd8c")
@@ -771,7 +1332,7 @@
                     this.appendValueInput('instance').setCheck("Instance").appendField('create var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour("#ec3b59")
+                    this.setColour("#8c0b50")
                 }
             }
             Blockly.Blocks['ivariables_delete'] = {
@@ -779,14 +1340,14 @@
                     this.appendValueInput('instance').setCheck("Instance").appendField('delete var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('at instance')
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour("#ec3b59")
+                    this.setColour("#8c0b50")
                 }
             }
             Blockly.Blocks['ivariables_exists'] = {
                 init: function() {
                     this.appendValueInput('instance').setCheck("Instance").appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('exists at instance')
                     this.setOutput(true, "Boolean")
-                    this.setColour("#ec3b59")
+                    this.setColour("#8c0b50")
                 }
             }
             Blockly.Blocks['ivariables_set'] = {
@@ -796,7 +1357,7 @@
                     this.setInputsInline(true)
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour("#ec3b59")
+                    this.setColour("#8c0b50")
                 }
             }
             Blockly.Blocks['ivariables_change'] = {
@@ -806,14 +1367,14 @@
                     this.setInputsInline(true)
                     this.setPreviousStatement(true, "Block")
                     this.setNextStatement(true, "Block")
-                    this.setColour("#ec3b59")
+                    this.setColour("#8c0b50")
                 }
             }
             Blockly.Blocks['ivariables_get'] = {
                 init: function() {
                     this.appendValueInput('instance').setCheck("Instance").appendField('var').appendField(new Blockly.FieldTextInput('variable'), 'varname').appendField('from instance')
                     this.setOutput(true)
-                    this.setColour("#ec3b59")
+                    this.setColour("#8c0b50")
                 }
             }
             Blockly.Blocks['gvariables_create'] = {
@@ -1066,51 +1627,261 @@
                     this.appendDummyInput().appendField("to").appendField(new Blockly.FieldDropdown([
                         ["real","real"],
                         ["integer","floor"],
-                        ["int64", "is_int64"]
+                        ["int64", "int64"]
                     ]), "type").appendField("number")
                     this.setOutput(true, "Number")
                     this.setInputsInline(true)
                     this.setColour("#59c059")
                 }
             }
-            Blockly.Blocks['geometry_2d_vector'] = {
+            Blockly.Blocks['geometry_pi'] = {
                 init: function() {
-                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("x:")
-                    this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
-                    this.setOutput(true, "Point")
+                    this.appendDummyInput().appendField("pi")
+                    this.setOutput(true, "Number")
                     this.setInputsInline(true)
                     this.setColour("#6babff")
                 }
             }
-            
+            Blockly.Blocks['geometry_func'] = {
+                init: function() {
+                    this.appendValueInput('value').setCheck("Number").appendField(new Blockly.FieldDropdown([
+                        ["sine","sin(~)"],
+                        ["cosine","cos(~)"],
+                        ["tangent","tan(~)"],
+                        ["cotangent","(1 / tan(~))"],
+                        ["sectant","(1 / cos(~))"],
+                        ["cosectant","(1 / sin(~))"],
+                        "separator",
+                        ["arc sine","arcsin(~)"],
+                        ["arc cosine","arccos(~)"],
+                        ["arc tangent","arctan(~)"],
+                        ["arc cotangent","(pi / 2 - arctan(~))"],
+                        ["arc sectant","arccos(1 / (~))"],
+                        ["arc cosectant","sin(1 / (~))"]
+                    ]), "type").appendField("of")
+                    this.setOutput(true, "Number")
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_angle_difference'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Number").appendField("differ angles")
+                    this.appendValueInput("valueB").setCheck("Number").appendField("and")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_angle_format'] = {
+                init: function() {
+                    this.appendValueInput('value').setCheck("Number").appendField("convert")
+                    this.appendDummyInput().appendField("to").appendField(new Blockly.FieldDropdown([
+                        ["degrees","radtodeg"],
+                        ["radians","degtorad"],
+                    ]), "format")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                },
+            }
+            Blockly.Blocks['geometry_distance_to_object'] = {
+                init: function() {
+                    this.appendValueInput("obj").setCheck(["Object", "Instance"]).appendField("distance to object")
+                    this.setOutput(true, "Number")
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_distance_to_vector'] = {
+                init: function() {
+                    this.appendValueInput("vector").setCheck("Vector").appendField("my distance to vector")
+                    this.setOutput(true, "Number")
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_2d_vector'] = {
+                init: function() {
+                    this.appendValueInput("x").setCheck("Number").appendField("vector x:")
+                    this.appendValueInput("y").setCheck("Number").appendField("y:")
+                    this.setOutput(true, "Vector")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_2d_polar'] = {
+                init: function() {
+                    this.appendValueInput("r").setCheck("Number").appendField("polar r:")
+                    this.appendValueInput("theta").setCheck("Number").appendField("θ:")
+                    this.setOutput(true, "Vector")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
             Blockly.Blocks['geometry_3d_vector'] = {
                 init: function() {
-                    this.appendValueInput("x").setCheck("Number").setAlign(1).appendField("x:")
-                    this.appendValueInput("y").setCheck("Number").setAlign(1).appendField("y:")
-                    this.appendValueInput("z").setCheck("Number").setAlign(1).appendField("z:")
-                    this.setOutput(true, "Point")
+                    this.appendValueInput("x").setCheck("Number").appendField("vector x:")
+                    this.appendValueInput("y").setCheck("Number").appendField("y:")
+                    this.appendValueInput("z").setCheck("Number").appendField("z:")
+                    this.setOutput(true, "Vector")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_3d_spherical'] = {
+                init: function() {
+                    this.appendValueInput("rho").setCheck("Number").appendField("cartesian ρ:")
+                    this.appendValueInput("theta").setCheck("Number").appendField("θ:")
+                    this.appendValueInput("phi").setCheck("Number").appendField("φ:")
+                    this.setOutput(true, "Vector")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_3d_cylindrical'] = {
+                init: function() {
+                    this.appendValueInput("r").setCheck("Number").appendField("cylindrical r:")
+                    this.appendValueInput("theta").setCheck("Number").appendField("θ:")
+                    this.appendValueInput("z").setCheck("Number").appendField("z:")
+                    this.setOutput(true, "Vector")
                     this.setInputsInline(true)
                     this.setColour("#6babff")
                 }
             }
             Blockly.Blocks['geometry_operator'] = {
                 init: function() {
-                    this.appendValueInput("valueA").setCheck("Number")
+                    this.appendValueInput("valueA").setCheck("Vector")
                     this.appendDummyInput().appendField(new Blockly.FieldDropdown([
-                        ["+", "(~ + ~)"],
-                        ["-", "(~ - ~)"],
-                        ["*", "(~ * ~)"],
-                        ["/", "(~ / ~)"],
+                        ["+", "~ + ~"],
+                        ["-", "~ - ~"],
+                        ["*", "~ * ~"],
+                        ["/", "~ / ~"],
                         "separator",
                         ["^", "power(~, ~)"],
-                        ["root", "power(~, 1 / (~))"],
+                        ["root", "power(~, 1 / ~)"],
                         ["log", "logn(~, ~)"],
-                        ["mod", "(~ % ~)"]
+                        ["mod", "~ % ~"]
                     ]), "operator")
-                    this.appendValueInput("valueB").setCheck("Number")
+                    this.appendValueInput("valueB").setCheck("Vector")
+                    this.setOutput(true, "Vector")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_axis'] = {
+                init: function() {
+                    this.appendValueInput("value").setCheck("Vector").appendField(new Blockly.FieldDropdown([
+                        ["x axis", "~.x"],
+                        ["y axis", "~.y"],
+                        ["z axis", "~.z"],
+                        "separator",
+                        ["magnitude", "sqrt(sqr(~.x) + sqr(~.y) + sqr(~.z))"],
+                        ["azimuth", "acos(~.z / sqrt(sqr(~.x) + sqr(~.y) + sqr(~.z)))"],
+                        ["atan2", "atan2(~.y, ~.x)"],
+                        ["normalized", "{}"]
+                    ]), "axis").appendField("of vector")
+                    this.setOutput(true, "Vector")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_direction'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("direction from")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("to")
                     this.setOutput(true, "Number")
                     this.setInputsInline(true)
                     this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_2d_distance_between'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("2d distance between")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("and")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_2d_dot_product'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("2d dot product")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("∙")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_2d_dot_product_normalized'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("2d normalized dot product")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("∙")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_3d_distance_between'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("3d distance between")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("and")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_3d_dot_product'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("3d dot product")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("∙")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['geometry_3d_dot_product_normalized'] = {
+                init: function() {
+                    this.appendValueInput("valueA").setCheck("Vector").appendField("3d normalized dot product")
+                    this.appendValueInput("valueB").setCheck("Vector").appendField("∙")
+                    this.setOutput(true, "Number")
+                    this.setInputsInline(true)
+                    this.setColour("#6babff")
+                }
+            }
+            Blockly.Blocks['arrays_create'] = {
+                init: function() {
+                    this.appendStatementInput("items").setCheck("Array Item").appendField("array")
+                    this.setOutput(true, "Array")
+                    this.setColour("#ff661a")
+                }
+            }
+            Blockly.Blocks['arrays_item'] = {
+                init: function() {
+                    this.appendValueInput("value").appendField("array item")
+                    this.setPreviousStatement(true, "Array Item")
+                    this.setNextStatement(true, "Array Item")
+                    this.setColour("#ff661a")
+                }
+            }
+            Blockly.Blocks['structs_create'] = {
+                init: function() {
+                    this.appendStatementInput("items").setCheck("Struct Item").appendField("struct")
+                    this.setOutput(true, "Array")
+                    this.setColour("#748bee")
+                }
+            }
+            Blockly.Blocks['structs_var'] = {
+                init: function() {
+                    this.appendDummyInput().appendField("struct var").appendField(new Blockly.FieldTextInput("variable"), "varname")
+                    this.setPreviousStatement(true, "Struct Item")
+                    this.setNextStatement(true, "Struct Item")
+                    this.setColour("#748bee")
+                }
+            }
+            Blockly.Blocks['structs_var_value'] = {
+                init: function() {
+                    this.appendValueInput("value").appendField("struct var").appendField(new Blockly.FieldTextInput("variable"), "varname").appendField("value")
+                    this.setPreviousStatement(true, "Struct Item")
+                    this.setNextStatement(true, "Struct Item")
+                    this.setColour("#748bee")
                 }
             }
             gmlGenerator.forBlock['logic_if'] = function(block) {
@@ -1326,10 +2097,7 @@
                 const text = block.getFieldValue('text').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')
                 return [`"${text}"`, 0]
             }
-            gmlGenerator.forBlock['numbers_create'] = function(block) {
-                const number = block.getFieldValue('number')
-                return [`${number}`, 0]
-            }
+            gmlGenerator.forBlock['numbers_create'] = (block) => [block.getFieldValue('number'), 0]
             gmlGenerator.forBlock['numbers_operator'] = function(block) {
                 const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '0'
                 const operator = block.getFieldValue('operator').split('~')
@@ -1380,10 +2148,35 @@
                 return [operator[0] + value + operator[1], 0]
             }
             gmlGenerator.forBlock['numbers_to_number'] = gmlGenerator.forBlock['numbers_is_number']
+            gmlGenerator.forBlock['geometry_pi'] = () => "pi"
+            gmlGenerator.forBlock['geometry_func'] = gmlGenerator.forBlock['numbers_is_number']
+            gmlGenerator.forBlock['geometry_angle_difference'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '0'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '0'
+                return [`angle_difference(${valueA}, ${valueB})`, 0]
+            }
+            gmlGenerator.forBlock['geometry_angle_format'] = function(block) {
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || '0'
+                const format = block.getFieldValue('format')
+                return [`${format}(${value})`, 0]
+            }
+            gmlGenerator.forBlock['geometry_distance_to_object'] = function(block) {
+                const obj = gmlGenerator.valueToCode(block, 'object', 0) || 'noone'
+                return [`distance_to_object(${obj})`, 0]
+            }
+            gmlGenerator.forBlock['geometry_distance_to_vector'] = function(block) {
+                const vec = gmlGenerator.valueToCode(block, 'vector', 0) || '{x: 0, y: 0, z: 0}'
+                return [`distance_to_point(${vec}.x, ${vec}.y)`, 0]
+            }
             gmlGenerator.forBlock['geometry_2d_vector'] = function(block) {
                 const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
                 const y = gmlGenerator.valueToCode(block, 'y', 0) || '0'
-                return [`{x: ${x}, y: ${y}}`, 0]
+                return [`{x: ${x}, y: ${y}, z: 0}`, 0]
+            }
+            gmlGenerator.forBlock['geometry_2d_polar'] = function(block) {
+                const r = gmlGenerator.valueToCode(block, 'r', 0) || '0'
+                const theta = gmlGenerator.valueToCode(block, 'theta', 0) || '0'
+                return [`{x: ${r} * cos(${theta}), y: ${r} * sin(${theta}), z: 0}`, 0]
             }
             gmlGenerator.forBlock['geometry_3d_vector'] = function(block) {
                 const x = gmlGenerator.valueToCode(block, 'x', 0) || '0'
@@ -1391,6 +2184,70 @@
                 const z = gmlGenerator.valueToCode(block, 'z', 0) || '0'
                 return [`{x: ${x}, y: ${y}, z: ${z}}`, 0]
             }
+            gmlGenerator.forBlock['geometry_3d_spherical'] = function(block) {
+                const rho = gmlGenerator.valueToCode(block, 'rho', 0) || '0'
+                const theta = gmlGenerator.valueToCode(block, 'theta', 0) || '0'
+                const phi = gmlGenerator.valueToCode(block, 'phi', 0) || '0'
+                return [`{x: ${rho} * sin(${theta}) * cos(${phi}),\n y: ${rho} * sin(${theta}) * sin(${phi}),\n z: ${rho} * cos(${theta})}`, 0]
+            }
+            gmlGenerator.forBlock['geometry_3d_cylindrical'] = function(block) {
+                const r = gmlGenerator.valueToCode(block, 'r', 0) || '0'
+                const theta = gmlGenerator.valueToCode(block, 'theta', 0) || '0'
+                const z = gmlGenerator.valueToCode(block, 'z', 0) || '0'
+                return [`{x: ${r} * cos(${theta}), y: ${rho} * sin(${theta}), z: ${z}}`, 0]
+            }
+            gmlGenerator.forBlock['geometry_axis'] = function(block) {
+                const value = gmlGenerator.valueToCode(block, 'value', 0) || '0'
+                const axis = block.getFieldValue('axis')
+                return [axis.replaceAll("~", value), 0]
+            }
+            gmlGenerator.forBlock['geometry_operator'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const operator = block.getFieldValue('operator').split('~')
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                const coll = (p) => `${operator[0]}${valueA}.${p}${operator[1]}${valueB}.${p}${operator[2]}`
+                return [`{x: ${coll('x')}, y: ${coll('y')}, z: ${coll('z')}}`, 0]
+            }
+            gmlGenerator.forBlock['geometry_direction'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`point_direction(${valueA}.x, ${valueA}.y, ${valueB}.x, ${valueB}.y)`, 0]
+            }
+            gmlGenerator.forBlock['geometry_2d_distance_between'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`point_distance(${valueA}.x, ${valueA}.y, ${valueB}.x, ${valueB}.y)`, 0]
+            }
+            gmlGenerator.forBlock['geometry_2d_dot_product'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`dot_product(${valueA}.x, ${valueA}.y, ${valueB}.x, ${valueB}.y)`, 0]
+            }
+            gmlGenerator.forBlock['geometry_2d_dot_product_normalized'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`dot_product_normalized(${valueA}.x, ${valueA}.y, ${valueB}.x, ${valueB}.y)`, 0]
+            }
+            gmlGenerator.forBlock['geometry_3d_distance_between'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`point_distance_3d(${valueA}.x, ${valueA}.y, ${valueA}.z, ${valueB}.x, ${valueB}.y, ${valueB}.z)`, 0]
+            }
+            gmlGenerator.forBlock['geometry_3d_dot_product'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`dot_product_3d(${valueA}.x, ${valueA}.y, ${valueA}.z, ${valueB}.x, ${valueB}.y, ${valueB}.z)`, 0]
+            }
+            gmlGenerator.forBlock['geometry_3d_dot_product_normalized'] = function(block) {
+                const valueA = gmlGenerator.valueToCode(block, 'valueA', 0) || '{x: 0, y: 0, z: 0}'
+                const valueB = gmlGenerator.valueToCode(block, 'valueB', 0) || '{x: 0, y: 0, z: 0}'
+                return [`dot_product_3d_normalized(${valueA}.x, ${valueA}.y, ${valueA}.z, ${valueB}.x, ${valueB}.y, ${valueB}.z)`, 0]
+            }
+            gmlGenerator.forBlock['arrays_create'] = (block) => `[${gmlGenerator.statementToCode(block, 'statement').slice(0, -2)}]`
+            gmlGenerator.forBlock['arrays_item'] = (block) => gmlGenerator.valueToCode(block, 'value', 0) + ', '
+            gmlGenerator.forBlock['structs_create'] = (block) => `{${gmlGenerator.statementToCode(block, 'statement').slice(0, -3)}\n}`
+            gmlGenerator.forBlock['structs_var'] = (block) => block.getFieldValue('varname') + ': undefined, '
+            gmlGenerator.forBlock['structs_var_value'] = (block) => block.getFieldValue('varname') + ': ' + gmlGenerator.valueToCode(block, 'value', 0) + ', '
             Blockly.Extensions.register('hydra_toggle_next', function() {
                 const update = () => {
                     const hasOutput = this.outputConnection && this.outputConnection.targetConnection
@@ -1401,54 +2258,52 @@
                             this.nextConnection = null
                         }
                     } else {
-                        if (!this.nextConnection) {
-                            this.setNextStatement(true)
-                        }
+                        if (!this.nextConnection) this.setNextStatement(true) 
                     }
                 };
                 this.setOnChange(function(event) {
                     if (!this.workspace || this.isInFlyout) return
-                    update();
+                    update()
                 });
                 setTimeout(update, 0)
             })
             function saveBlocks() {
-                const xml = Blockly.Xml.workspaceToDom(workspace);
-                const xmlText = Blockly.Xml.domToPrettyText(xml);
-                const blob = new Blob([xmlText], {type: "text/xml"});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "blocks.xml";
-                a.click();
-                URL.revokeObjectURL(url);
+                const xml = Blockly.Xml.workspaceToDom(workspace)
+                const xmlText = Blockly.Xml.domToPrettyText(xml)
+                const blob = new Blob([xmlText], {type: "text/xml"})
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement("a")
+                a.href = url
+                a.download = "blocks.xml"
+                a.click()
+                URL.revokeObjectURL(url)
             }
             function loadBlocks() {
-                const input = document.createElement("input");
-                input.type = "file";
-                input.accept = "text/xml";
+                const input = document.createElement("input")
+                input.type = "file"
+                input.accept = "text/xml"
                 input.onchange = (event) => {
-                    const file = event.target.files[0];
-                    const reader = new FileReader();
+                    const file = event.target.files[0]
+                    const reader = new FileReader()
                     reader.onload = (e) => {
-                        const xmlText = e.target.result;
-                        const xml = Blockly.Xml.textToDom(xmlText);
-                        workspace.clear();
-                        Blockly.Xml.domToWorkspace(xml, workspace);
-                    };
-                    reader.readAsText(file);
-                };
-                input.click();
+                        const xmlText = e.target.result
+                        const xml = Blockly.Xml.textToDom(xmlText)
+                        workspace.clear()
+                        Blockly.Xml.domToWorkspace(xml, workspace)
+                    }
+                    reader.readAsText(file)
+                }
+                input.click()
             } 
             function exportCode() {
-                const code = gmlGenerator.workspaceToCode(workspace);
-                const blob = new Blob([code], {type: "text/plain"});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "code.gml";
-                a.click();
-                URL.revokeObjectURL(url);
+                const code = gmlGenerator.workspaceToCode(workspace)
+                const blob = new Blob([code], {type: "text/plain"})
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement("a")
+                a.href = url
+                a.download = "code.gml"
+                a.click()
+                URL.revokeObjectURL(url)
             }
         </script>
     </body>
