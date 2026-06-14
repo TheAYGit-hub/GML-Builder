@@ -1,0 +1,38 @@
+<category name="Control">
+    <category name="Logic" colour="#4c97ff">
+        <block type="logic_if"></block>
+        <sep gap=8></sep>
+        <block type="logic_if">
+            <mutation elseif="1"></mutation>
+        </block>
+        <sep gap=8></sep>
+        <block type="logic_if">
+            <mutation else="1"></mutation>
+        </block>
+        <sep gap=8></sep>
+        <block type="logic_if_report"></block>
+        <block type="logic_operator"></block>
+        <sep gap=8></sep>
+        <block type="logic_operator">
+            <field name="op">or</field>
+        </block>
+        <sep gap=8></sep>
+        <block type="logic_operator">
+            <field name="op">xor</field>
+        </block>
+        <sep gap=8></sep>
+        <block type="logic_not"></block>
+        <block type="logic_boolean"></block>
+        <sep gap=8></sep>
+        <block type="logic_boolean">
+            <field name="op">false</field>
+        </block>
+    </category>
+</category>
+<category name="Values">
+    <category name="Numbers" colour="#0fbd8c">
+        <block type="numbers_real"></block>
+        <sep gap=8></sep>
+        <block type="numbers_integer"></block>
+    </category>
+</category>
